@@ -2,21 +2,21 @@
  * matter-js 0.19.0 by @liabru
  * http://brm.io/matter-js/
  * License MIT
- * 
+ *
  * The MIT License (MIT)
- * 
+ *
  * Copyright (c) Liam Brummitt and contributors.
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -143,7 +143,7 @@ module.exports = Common;
     Common._nowStartTime = +(new Date());
     Common._warnedOnce = {};
     Common._decomp = null;
-    
+
     /**
      * Extends the object in the first argument using the object in the second argument.
      * @method extend
@@ -182,7 +182,7 @@ module.exports = Common;
                 }
             }
         }
-        
+
         return obj;
     };
 
@@ -222,7 +222,7 @@ module.exports = Common;
      */
     Common.values = function(obj) {
         var values = [];
-        
+
         if (Object.keys) {
             var keys = Object.keys(obj);
             for (var i = 0; i < keys.length; i++) {
@@ -230,7 +230,7 @@ module.exports = Common;
             }
             return values;
         }
-        
+
         // avoid hasOwnProperty for performance
         for (var key in obj)
             values.push(obj[key]);
@@ -353,7 +353,7 @@ module.exports = Common;
     Common.isString = function(obj) {
         return toString.call(obj) === '[object String]';
     };
-    
+
     /**
      * Returns the given value clamped between a minimum and maximum value.
      * @method clamp
@@ -369,7 +369,7 @@ module.exports = Common;
             return max;
         return value;
     };
-    
+
     /**
      * Returns the sign of the given value.
      * @method sign
@@ -379,7 +379,7 @@ module.exports = Common;
     Common.sign = function(value) {
         return value < 0 ? -1 : 1;
     };
-    
+
     /**
      * Returns the current timestamp since the time origin (e.g. from page load).
      * The result is in milliseconds and will use high-resolution timing if available.
@@ -401,7 +401,7 @@ module.exports = Common;
 
         return (new Date()) - Common._nowStartTime;
     };
-    
+
     /**
      * Returns a random value between a minimum and a maximum value inclusive.
      * The function uses a seeded random generator.
@@ -442,7 +442,7 @@ module.exports = Common;
 
     /**
      * The console logging level to use, where each level includes all levels above and excludes the levels below.
-     * The default level is 'debug' which shows all console messages.  
+     * The default level is 'debug' which shows all console messages.
      *
      * Possible level values are:
      * - 0 = None
@@ -725,7 +725,7 @@ module.exports = Common;
             if (!decomp && typeof window !== 'undefined') {
                 decomp = window.decomp;
             }
-    
+
             // otherwise from node global
             if (!decomp && typeof global !== 'undefined') {
                 decomp = global.decomp;
@@ -763,14 +763,14 @@ module.exports = Bounds;
      * @return {bounds} A new bounds object
      */
     Bounds.create = function(vertices) {
-        var bounds = { 
-            min: { x: 0, y: 0 }, 
+        var bounds = {
+            min: { x: 0, y: 0 },
             max: { x: 0, y: 0 }
         };
 
         if (vertices)
             Bounds.update(bounds, vertices);
-        
+
         return bounds;
     };
 
@@ -794,14 +794,14 @@ module.exports = Bounds;
             if (vertex.y > bounds.max.y) bounds.max.y = vertex.y;
             if (vertex.y < bounds.min.y) bounds.min.y = vertex.y;
         }
-        
+
         if (velocity) {
             if (velocity.x > 0) {
                 bounds.max.x += velocity.x;
             } else {
                 bounds.min.x += velocity.x;
             }
-            
+
             if (velocity.y > 0) {
                 bounds.max.y += velocity.y;
             } else {
@@ -818,7 +818,7 @@ module.exports = Bounds;
      * @return {boolean} True if the bounds contain the point, otherwise false
      */
     Bounds.contains = function(bounds, point) {
-        return point.x >= bounds.min.x && point.x <= bounds.max.x 
+        return point.x >= bounds.min.x && point.x <= bounds.max.x
                && point.y >= bounds.min.y && point.y <= bounds.max.y;
     };
 
@@ -856,13 +856,13 @@ module.exports = Bounds;
     Bounds.shift = function(bounds, position) {
         var deltaX = bounds.max.x - bounds.min.x,
             deltaY = bounds.max.y - bounds.min.y;
-            
+
         bounds.min.x = position.x;
         bounds.max.x = position.x + deltaX;
         bounds.min.y = position.y;
         bounds.max.y = position.y + deltaY;
     };
-    
+
 })();
 
 
@@ -1103,8 +1103,8 @@ module.exports = Vector;
      * @private
      */
     Vector._temp = [
-        Vector.create(), Vector.create(), 
-        Vector.create(), Vector.create(), 
+        Vector.create(), Vector.create(),
+        Vector.create(), Vector.create(),
         Vector.create(), Vector.create()
     ];
 
@@ -1170,7 +1170,7 @@ var Common = __webpack_require__(0);
     };
 
     /**
-     * Parses a string containing ordered x y pairs separated by spaces (and optionally commas), 
+     * Parses a string containing ordered x y pairs separated by spaces (and optionally commas),
      * into a `Matter.Vertices` object for the given `Matter.Body`.
      * For parsing SVG paths, see `Svg.pathToVertices`.
      * @method fromPath
@@ -1291,7 +1291,7 @@ var Common = __webpack_require__(0);
             translateX = vector.x * scalar,
             translateY = vector.y * scalar,
             i;
-        
+
         for (i = 0; i < verticesLength; i++) {
             vertices[i].x += translateX;
             vertices[i].y += translateY;
@@ -1349,7 +1349,7 @@ var Common = __webpack_require__(0);
         for (var i = 0; i < verticesLength; i++) {
             nextVertex = vertices[i];
 
-            if ((pointX - vertex.x) * (nextVertex.y - vertex.y) 
+            if ((pointX - vertex.x) * (nextVertex.y - vertex.y)
                 + (pointY - vertex.y) * (vertex.x - nextVertex.x) > 0) {
                 return false;
             }
@@ -1422,13 +1422,13 @@ var Common = __webpack_require__(0);
                 continue;
             }
 
-            var prevNormal = Vector.normalise({ 
-                x: vertex.y - prevVertex.y, 
+            var prevNormal = Vector.normalise({
+                x: vertex.y - prevVertex.y,
                 y: prevVertex.x - vertex.x
             });
 
-            var nextNormal = Vector.normalise({ 
-                x: nextVertex.y - vertex.y, 
+            var nextNormal = Vector.normalise({
+                x: nextVertex.y - vertex.y,
                 y: vertex.x - nextVertex.x
             });
 
@@ -1531,7 +1531,7 @@ var Common = __webpack_require__(0);
         // http://geomalgorithms.com/a10-_hull-1.html
 
         var upper = [],
-            lower = [], 
+            lower = [],
             vertex,
             i;
 
@@ -1546,7 +1546,7 @@ var Common = __webpack_require__(0);
         for (i = 0; i < vertices.length; i += 1) {
             vertex = vertices[i];
 
-            while (lower.length >= 2 
+            while (lower.length >= 2
                    && Vector.cross3(lower[lower.length - 2], lower[lower.length - 1], vertex) <= 0) {
                 lower.pop();
             }
@@ -1558,7 +1558,7 @@ var Common = __webpack_require__(0);
         for (i = vertices.length - 1; i >= 0; i -= 1) {
             vertex = vertices[i];
 
-            while (upper.length >= 2 
+            while (upper.length >= 2
                    && Vector.cross3(upper[upper.length - 2], upper[upper.length - 1], vertex) <= 0) {
                 upper.pop();
             }
@@ -1928,7 +1928,7 @@ var Axes = __webpack_require__(11);
      *
      * The `vertices` argument should be passed as an array of `Matter.Vector` points (or a `Matter.Vertices` array).
      * Vertices must form a convex hull. Concave vertices must be decomposed into convex parts.
-     * 
+     *
      * @method setVertices
      * @param {body} body
      * @param {vector[]} vertices
@@ -2022,7 +2022,7 @@ var Axes = __webpack_require__(11);
     };
 
     /**
-     * Set the centre of mass of the body. 
+     * Set the centre of mass of the body.
      * The `centre` is a vector in world-space unless `relative` is set, in which case it is a translation.
      * The centre of mass is the point the body rotates about and can be used to simulate non-uniform density.
      * This is equal to moving `body.position` but not the `body.vertices`.
@@ -2087,7 +2087,7 @@ var Axes = __webpack_require__(11);
      */
     Body.setAngle = function(body, angle, updateVelocity) {
         var delta = angle - body.angle;
-        
+
         if (updateVelocity) {
             body.anglePrev = body.angle;
             body.angularVelocity = delta;
@@ -2109,7 +2109,7 @@ var Axes = __webpack_require__(11);
     };
 
     /**
-     * Sets the current linear velocity of the body.  
+     * Sets the current linear velocity of the body.
      * Affects body speed.
      * @method setVelocity
      * @param {body} body
@@ -2140,7 +2140,7 @@ var Axes = __webpack_require__(11);
     };
 
     /**
-     * Gets the current linear speed of the body.  
+     * Gets the current linear speed of the body.
      * Equivalent to the magnitude of its velocity.
      * @method getSpeed
      * @param {body} body
@@ -2151,7 +2151,7 @@ var Axes = __webpack_require__(11);
     };
 
     /**
-     * Sets the current linear speed of the body.  
+     * Sets the current linear speed of the body.
      * Direction is maintained. Affects body velocity.
      * @method setSpeed
      * @param {body} body
@@ -2162,7 +2162,7 @@ var Axes = __webpack_require__(11);
     };
 
     /**
-     * Sets the current rotational velocity of the body.  
+     * Sets the current rotational velocity of the body.
      * Affects body angular speed.
      * @method setAngularVelocity
      * @param {body} body
@@ -2186,7 +2186,7 @@ var Axes = __webpack_require__(11);
     };
 
     /**
-     * Gets the current rotational speed of the body.  
+     * Gets the current rotational speed of the body.
      * Equivalent to the magnitude of its angular velocity.
      * @method getAngularSpeed
      * @param {body} body
@@ -2197,7 +2197,7 @@ var Axes = __webpack_require__(11);
     };
 
     /**
-     * Sets the current rotational speed of the body.  
+     * Sets the current rotational speed of the body.
      * Direction is maintained. Affects body angular velocity.
      * @method setAngularSpeed
      * @param {body} body
@@ -2236,7 +2236,7 @@ var Axes = __webpack_require__(11);
                 sin = Math.sin(rotation),
                 dx = body.position.x - point.x,
                 dy = body.position.y - point.y;
-                
+
             Body.setPosition(body, {
                 x: point.x + (dx * cos - dy * sin),
                 y: point.y + (dx * sin + dy * cos)
@@ -2300,7 +2300,7 @@ var Axes = __webpack_require__(11);
         }
 
         // handle circles
-        if (body.circleRadius) { 
+        if (body.circleRadius) {
             if (scaleX === scaleY) {
                 body.circleRadius *= scaleX;
             } else {
@@ -2348,7 +2348,7 @@ var Axes = __webpack_require__(11);
             var part = body.parts[i];
 
             Vertices.translate(part.vertices, body.velocity);
-            
+
             if (i > 0) {
                 part.position.x += body.velocity.x;
                 part.position.y += body.velocity.y;
@@ -2385,17 +2385,17 @@ var Axes = __webpack_require__(11);
 
     /**
      * Applies the `force` to the `body` from the force origin `position` in world-space, over a single timestep, including applying any resulting angular torque.
-     * 
+     *
      * Forces are useful for effects like gravity, wind or rocket thrust, but can be difficult in practice when precise control is needed. In these cases see `Body.setVelocity` and `Body.setPosition` as an alternative.
-     * 
+     *
      * The force from this function is only applied once for the duration of a single timestep, in other words the duration depends directly on the current engine update `delta` and the rate of calls to this function.
-     * 
+     *
      * Therefore to account for time, you should apply the force constantly over as many engine updates as equivalent to the intended duration.
-     * 
+     *
      * If all or part of the force duration is some fraction of a timestep, first multiply the force by `duration / timestep`.
-     * 
+     *
      * The force origin `position` in world-space must also be specified. Passing `body.position` will result in zero angular effect as the force origin would be at the centre of mass.
-     * 
+     *
      * The `body` will take time to accelerate under a force, the resulting effect depends on duration of the force, the body mass and other forces on the body including friction combined.
      * @method applyForce
      * @param {body} body
@@ -2485,7 +2485,7 @@ var Axes = __webpack_require__(11);
 
     /**
      * _Read only_. Set by `Body.create`.
-     * 
+     *
      * A `String` denoting the type of object.
      *
      * @readOnly
@@ -2503,9 +2503,9 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * _Read only_. Use `Body.setParts` to set. 
-     * 
-     * An array of bodies that make up this body. 
+     * _Read only_. Use `Body.setParts` to set.
+     *
+     * An array of bodies that make up this body.
      * The first body in the array must always be a self reference to the current body instance.
      * All bodies in the `parts` array together form a single rigid compound body.
      * Parts are allowed to overlap, have gaps or holes or even form concave bodies.
@@ -2526,7 +2526,7 @@ var Axes = __webpack_require__(11);
 
     /**
      * _Read only_. Updated by `Body.setParts`.
-     * 
+     *
      * A reference to the body that this is a part of. See `body.parts`.
      * This is a self reference if the body is not a part of another body.
      *
@@ -2545,19 +2545,19 @@ var Axes = __webpack_require__(11);
 
     /**
      * _Read only_. Use `Body.setVertices` or `Body.setParts` to set. See also `Bodies.fromVertices`.
-     * 
+     *
      * An array of `Vector` objects that specify the convex hull of the rigid body.
      * These should be provided about the origin `(0, 0)`. E.g.
      *
      * `[{ x: 0, y: 0 }, { x: 25, y: 50 }, { x: 50, y: 0 }]`
-     * 
+     *
      * Vertices must always be convex, in clockwise order and must not contain any duplicate points.
-     * 
+     *
      * Concave vertices should be decomposed into convex `parts`, see `Bodies.fromVertices` and `Body.setParts`.
      *
      * When set the vertices are translated such that `body.position` is at the centre of mass.
      * Many other body properties are automatically calculated from these vertices when set including `density`, `area` and `inertia`.
-     * 
+     *
      * The module `Matter.Vertices` contains useful methods for working with vertices.
      *
      * @readOnly
@@ -2566,10 +2566,10 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * _Read only_. Use `Body.setPosition` to set. 
-     * 
+     * _Read only_. Use `Body.setPosition` to set.
+     *
      * A `Vector` that specifies the current world-space position of the body.
-     * 
+     *
      * @readOnly
      * @property position
      * @type vector
@@ -2579,7 +2579,7 @@ var Axes = __webpack_require__(11);
     /**
      * A `Vector` that accumulates the total force applied to the body for a single update.
      * Force is zeroed after every `Engine.update`, so constant forces should be applied for every update they are needed. See also `Body.applyForce`.
-     * 
+     *
      * @property force
      * @type vector
      * @default { x: 0, y: 0 }
@@ -2590,19 +2590,19 @@ var Axes = __webpack_require__(11);
      * Torque is zeroed after every `Engine.update`, so constant torques should be applied for every update they are needed.
      *
      * Torques result in angular acceleration on every update, which depends on body inertia and the engine update delta.
-     * 
+     *
      * @property torque
      * @type number
      * @default 0
      */
 
     /**
-     * _Read only_. Use `Body.setSpeed` to set. 
-     * 
+     * _Read only_. Use `Body.setSpeed` to set.
+     *
      * See `Body.getSpeed` for details.
-     * 
+     *
      * Equivalent to the magnitude of `body.velocity` (always positive).
-     * 
+     *
      * @readOnly
      * @property speed
      * @type number
@@ -2610,12 +2610,12 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * _Read only_. Use `Body.setVelocity` to set. 
-     * 
+     * _Read only_. Use `Body.setVelocity` to set.
+     *
      * See `Body.getVelocity` for details.
-     * 
+     *
      * Equivalent to the magnitude of `body.angularVelocity` (always positive).
-     * 
+     *
      * @readOnly
      * @property velocity
      * @type vector
@@ -2623,11 +2623,11 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * _Read only_. Use `Body.setAngularSpeed` to set. 
-     * 
+     * _Read only_. Use `Body.setAngularSpeed` to set.
+     *
      * See `Body.getAngularSpeed` for details.
-     * 
-     * 
+     *
+     *
      * @readOnly
      * @property angularSpeed
      * @type number
@@ -2635,10 +2635,10 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * _Read only_. Use `Body.setAngularVelocity` to set. 
-     * 
+     * _Read only_. Use `Body.setAngularVelocity` to set.
+     *
      * See `Body.getAngularVelocity` for details.
-     * 
+     *
      *
      * @readOnly
      * @property angularVelocity
@@ -2647,8 +2647,8 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * _Read only_. Use `Body.setStatic` to set. 
-     * 
+     * _Read only_. Use `Body.setStatic` to set.
+     *
      * A flag that indicates whether a body is considered static. A static body can never change position or angle and is completely fixed.
      *
      * @readOnly
@@ -2666,8 +2666,8 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * _Read only_. Use `Sleeping.set` to set. 
-     * 
+     * _Read only_. Use `Sleeping.set` to set.
+     *
      * A flag that indicates whether the body is considered sleeping. A sleeping body acts similar to a static body, except it is only temporary and can be awoken.
      *
      * @readOnly
@@ -2678,11 +2678,11 @@ var Axes = __webpack_require__(11);
 
     /**
      * _Read only_. Calculated during engine update only when sleeping is enabled.
-     * 
+     *
      * A `Number` that loosely measures the amount of movement a body currently has.
      *
      * Derived from `body.speed^2 + body.angularSpeed^2`. See `Sleeping.update`.
-     * 
+     *
      * @readOnly
      * @property motion
      * @type number
@@ -2691,17 +2691,17 @@ var Axes = __webpack_require__(11);
 
     /**
      * A `Number` that defines the length of time during which this body must have near-zero velocity before it is set as sleeping by the `Matter.Sleeping` module (if sleeping is enabled by the engine).
-     * 
+     *
      * @property sleepThreshold
      * @type number
      * @default 60
      */
 
     /**
-     * _Read only_. Use `Body.setDensity` to set. 
-     * 
+     * _Read only_. Use `Body.setDensity` to set.
+     *
      * A `Number` that defines the density of the body (mass per unit area).
-     * 
+     *
      * Mass will also be updated when set.
      *
      * @readOnly
@@ -2711,20 +2711,20 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * _Read only_. Use `Body.setMass` to set. 
-     * 
+     * _Read only_. Use `Body.setMass` to set.
+     *
      * A `Number` that defines the mass of the body.
-     * 
+     *
      * Density will also be updated when set.
-     * 
+     *
      * @readOnly
      * @property mass
      * @type number
      */
 
     /**
-     * _Read only_. Use `Body.setMass` to set. 
-     * 
+     * _Read only_. Use `Body.setMass` to set.
+     *
      * A `Number` that defines the inverse mass of the body (`1 / mass`).
      *
      * @readOnly
@@ -2734,11 +2734,11 @@ var Axes = __webpack_require__(11);
 
     /**
      * _Read only_. Automatically calculated when vertices, mass or density are set or set through `Body.setInertia`.
-     * 
+     *
      * A `Number` that defines the moment of inertia of the body. This is the second moment of area in two dimensions.
-     * 
+     *
      * Can be manually set to `Infinity` to prevent rotation of the body. See `Body.setInertia`.
-     * 
+     *
      * @readOnly
      * @property inertia
      * @type number
@@ -2746,9 +2746,9 @@ var Axes = __webpack_require__(11);
 
     /**
      * _Read only_. Automatically calculated when vertices, mass or density are set or calculated by `Body.setInertia`.
-     * 
+     *
      * A `Number` that defines the inverse moment of inertia of the body (`1 / inertia`).
-     * 
+     *
      * @readOnly
      * @property inverseInertia
      * @type number
@@ -2756,7 +2756,7 @@ var Axes = __webpack_require__(11);
 
     /**
      * A `Number` that defines the restitution (elasticity) of the body. The value is always positive and is in the range `(0, 1)`.
-     * A value of `0` means collisions may be perfectly inelastic and no bouncing may occur. 
+     * A value of `0` means collisions may be perfectly inelastic and no bouncing may occur.
      * A value of `0.8` means the body may bounce back with approximately 80% of its kinetic energy.
      * Note that collision response is based on _pairs_ of bodies, and that `restitution` values are _combined_ with the following formula:
      *
@@ -2772,7 +2772,7 @@ var Axes = __webpack_require__(11);
      * A value of `0` means that the body may slide indefinitely.
      * A value of `1` means the body may come to a stop almost instantly after a force is applied.
      *
-     * The effects of the value may be non-linear. 
+     * The effects of the value may be non-linear.
      * High values may be unstable depending on the body.
      * The engine uses a Coulomb friction model including static and kinetic friction.
      * Note that collision response is based on _pairs_ of bodies, and that `friction` values are _combined_ with the following formula:
@@ -2785,7 +2785,7 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * A `Number` that defines the static friction of the body (in the Coulomb friction model). 
+     * A `Number` that defines the static friction of the body (in the Coulomb friction model).
      * A value of `0` means the body will never 'stick' when it is nearly stationary and only dynamic `friction` is used.
      * The higher the value (e.g. `10`), the more force it will take to initially get the body moving when nearly stationary.
      * This value is multiplied with the `friction` property to make it easier to change `friction` and maintain an appropriate amount of static friction.
@@ -2796,10 +2796,10 @@ var Axes = __webpack_require__(11);
      */
 
     /**
-     * A `Number` that defines the air friction of the body (air resistance). 
+     * A `Number` that defines the air friction of the body (air resistance).
      * A value of `0` means the body will never slow as it moves through space.
      * The higher the value, the faster a body slows when moving through space.
-     * The effects of the value are non-linear. 
+     * The effects of the value are non-linear.
      *
      * @property frictionAir
      * @type number
@@ -2863,9 +2863,9 @@ var Axes = __webpack_require__(11);
 
     /**
      * A `Number` that specifies a thin boundary around the body where it is allowed to slightly sink into other bodies.
-     * 
+     *
      * This is required for proper collision response, including friction and restitution effects.
-     * 
+     *
      * The default should generally suffice in most cases. You may need to decrease this value for very small bodies that are nearing the default value in scale.
      *
      * @property slop
@@ -2883,7 +2883,7 @@ var Axes = __webpack_require__(11);
 
     /**
      * _Read only_. Updated during engine update.
-     * 
+     *
      * A `Number` that records the last delta time value used to update this body.
      * Used to calculate speed and velocity.
      *
@@ -2929,7 +2929,7 @@ var Axes = __webpack_require__(11);
      * @property render.sprite.texture
      * @type string
      */
-     
+
     /**
      * A `Number` that defines the scaling in the x-axis for the sprite, if any.
      *
@@ -2991,7 +2991,7 @@ var Axes = __webpack_require__(11);
 
     /**
      * _Read only_. Calculated automatically when vertices are set.
-     * 
+     *
      * An array of unique axis vectors (edge normals) used for collision detection.
      * These are automatically calculated when vertices are set.
      * They are constantly updated by `Body.update` during the simulation.
@@ -3000,22 +3000,22 @@ var Axes = __webpack_require__(11);
      * @property axes
      * @type vector[]
      */
-     
+
     /**
      * _Read only_. Calculated automatically when vertices are set.
-     * 
+     *
      * A `Number` that measures the area of the body's convex hull.
-     * 
+     *
      * @readOnly
      * @property area
      * @type string
-     * @default 
+     * @default
      */
 
     /**
      * A `Bounds` object that defines the AABB region for the body.
      * It is automatically calculated when vertices are set and constantly updated by `Body.update` during simulation.
-     * 
+     *
      * @property bounds
      * @type bounds
      */
@@ -3114,7 +3114,7 @@ var Common = __webpack_require__(0);
             eventClone;
 
         var events = object.events;
-        
+
         if (events && Common.keys(events).length > 0) {
             if (!event)
                 event = {};
@@ -3150,7 +3150,7 @@ var Common = __webpack_require__(0);
 *
 * They are a container that can represent complex objects made of multiple parts, even if they are not physically connected.
 * A composite could contain anything from a single body all the way up to a whole world.
-* 
+*
 * When making any changes to composites, use the included functions rather than changing their properties directly.
 *
 * See the included usage [examples](https://github.com/liabru/matter-js/tree/master/examples).
@@ -3177,13 +3177,13 @@ var Body = __webpack_require__(4);
      * @return {composite} A new composite
      */
     Composite.create = function(options) {
-        return Common.extend({ 
+        return Common.extend({
             id: Common.nextId(),
             type: 'composite',
             parent: null,
             isModified: false,
-            bodies: [], 
-            constraints: [], 
+            bodies: [],
+            constraints: [],
             composites: [],
             label: 'Composite',
             plugin: {},
@@ -3196,7 +3196,7 @@ var Body = __webpack_require__(4);
     };
 
     /**
-     * Sets the composite's `isModified` flag. 
+     * Sets the composite's `isModified` flag.
      * If `updateParents` is true, all parents will be set (default: false).
      * If `updateChildren` is true, all children will be set (default: false).
      * @private
@@ -3484,7 +3484,7 @@ var Body = __webpack_require__(4);
                 Composite.clear(composite.composites[i], keepStatic, true);
             }
         }
-        
+
         if (keepStatic) {
             composite.bodies = composite.bodies.filter(function(body) { return body.isStatic; });
         } else {
@@ -3595,8 +3595,8 @@ var Body = __webpack_require__(4);
         if (!objects)
             return null;
 
-        object = objects.filter(function(object) { 
-            return object.id.toString() === id.toString(); 
+        object = objects.filter(function(object) {
+            return object.id.toString() === id.toString();
         });
 
         return object.length === 0 ? null : object[0];
@@ -3635,7 +3635,7 @@ var Body = __webpack_require__(4);
     };
 
     /**
-     * Translates all children in the composite by a given vector relative to their current positions, 
+     * Translates all children in the composite by a given vector relative to their current positions,
      * without imparting any velocity.
      * @method translate
      * @param {composite} composite
@@ -3669,7 +3669,7 @@ var Body = __webpack_require__(4);
             var body = bodies[i],
                 dx = body.position.x - point.x,
                 dy = body.position.y - point.y;
-                
+
             Body.setPosition(body, {
                 x: point.x + (dx * cos - dy * sin),
                 y: point.y + (dx * sin + dy * cos)
@@ -3697,7 +3697,7 @@ var Body = __webpack_require__(4);
             var body = bodies[i],
                 dx = body.position.x - point.x,
                 dy = body.position.y - point.y;
-                
+
             Body.setPosition(body, {
                 x: point.x + dx * scaleX,
                 y: point.y + dy * scaleY
@@ -3902,7 +3902,7 @@ var Common = __webpack_require__(0);
     Sleeping.update = function(bodies, delta) {
         var timeScale = delta / Common._baseDelta,
             motionSleepThreshold = Sleeping._motionSleepThreshold;
-        
+
         // update bodies sleeping status
         for (var i = 0; i < bodies.length; i++) {
             var body = bodies[i],
@@ -3918,13 +3918,13 @@ var Common = __webpack_require__(0);
 
             var minMotion = Math.min(body.motion, motion),
                 maxMotion = Math.max(body.motion, motion);
-        
+
             // biased average motion estimation between frames
             body.motion = Sleeping._minBias * minMotion + (1 - Sleeping._minBias) * maxMotion;
 
             if (body.sleepThreshold > 0 && body.motion < motionSleepThreshold) {
                 body.sleepCounter += 1;
-                
+
                 if (body.sleepCounter >= body.sleepThreshold / timeScale) {
                     Sleeping.set(body, true);
                 }
@@ -3945,19 +3945,19 @@ var Common = __webpack_require__(0);
         // wake up bodies involved in collisions
         for (var i = 0; i < pairs.length; i++) {
             var pair = pairs[i];
-            
+
             // don't wake inactive pairs
             if (!pair.isActive)
                 continue;
 
             var collision = pair.collision,
-                bodyA = collision.bodyA.parent, 
+                bodyA = collision.bodyA.parent,
                 bodyB = collision.bodyB.parent;
-        
+
             // don't wake if at least one body is static
             if ((bodyA.isSleeping && bodyB.isSleeping) || bodyA.isStatic || bodyB.isStatic)
                 continue;
-        
+
             if (bodyA.isSleeping || bodyB.isSleeping) {
                 var sleepingBody = (bodyA.isSleeping && !bodyA.isStatic) ? bodyA : bodyB,
                     movingBody = sleepingBody === bodyA ? bodyB : bodyA;
@@ -3968,7 +3968,7 @@ var Common = __webpack_require__(0);
             }
         }
     };
-  
+
     /**
      * Set a body as sleeping or awake.
      * @method set
@@ -4051,7 +4051,7 @@ var Pair = __webpack_require__(9);
      * @return {collision} A new collision record
      */
     Collision.create = function(bodyA, bodyB) {
-        return { 
+        return {
             pair: null,
             collided: false,
             bodyA: bodyA,
@@ -4127,7 +4127,7 @@ var Pair = __webpack_require__(9);
             normal.x = -minAxisX;
             normal.y = -minAxisY;
         }
-        
+
         collision.tangent.x = -normal.y;
         collision.tangent.y = normal.x;
 
@@ -4207,13 +4207,13 @@ var Pair = __webpack_require__(9);
                 minB = verticesBX * axisX + verticesBY * axisY,
                 maxA = minA,
                 maxB = minB;
-            
+
             for (j = 1; j < verticesALength; j += 1) {
                 dot = verticesA[j].x * axisX + verticesA[j].y * axisY;
 
-                if (dot > maxA) { 
+                if (dot > maxA) {
                     maxA = dot;
-                } else if (dot < minA) { 
+                } else if (dot < minA) {
                     minA = dot;
                 }
             }
@@ -4221,9 +4221,9 @@ var Pair = __webpack_require__(9);
             for (j = 1; j < verticesBLength; j += 1) {
                 dot = verticesB[j].x * axisX + verticesB[j].y * axisY;
 
-                if (dot > maxB) { 
+                if (dot > maxB) {
                     maxB = dot;
-                } else if (dot < minB) { 
+                } else if (dot < minB) {
                     minB = dot;
                 }
             }
@@ -4240,7 +4240,7 @@ var Pair = __webpack_require__(9);
                     // can not be intersecting
                     break;
                 }
-            } 
+            }
         }
 
         result.axis = axes[overlapAxisNumber];
@@ -4262,10 +4262,10 @@ var Pair = __webpack_require__(9);
         for (var i = 1; i < vertices.length; i += 1) {
             var dot = vertices[i].x * axis.x + vertices[i].y * axis.y;
 
-            if (dot > max) { 
-                max = dot; 
-            } else if (dot < min) { 
-                min = dot; 
+            if (dot > max) {
+                max = dot;
+            } else if (dot < min) {
+                min = dot;
             }
         }
 
@@ -4344,7 +4344,7 @@ var Pair = __webpack_require__(9);
 
     /**
      * A flag that indicates if the bodies were colliding when the collision was last updated.
-     * 
+     *
      * @property collided
      * @type boolean
      * @default false
@@ -4352,28 +4352,28 @@ var Pair = __webpack_require__(9);
 
     /**
      * The first body part represented by the collision (see also `collision.parentA`).
-     * 
+     *
      * @property bodyA
      * @type body
      */
 
     /**
      * The second body part represented by the collision (see also `collision.parentB`).
-     * 
+     *
      * @property bodyB
      * @type body
      */
 
     /**
      * The first body represented by the collision (i.e. `collision.bodyA.parent`).
-     * 
+     *
      * @property parentA
      * @type body
      */
 
     /**
      * The second body represented by the collision (i.e. `collision.bodyB.parent`).
-     * 
+     *
      * @property parentB
      * @type body
      */
@@ -4440,7 +4440,7 @@ module.exports = Pair;
 var Contact = __webpack_require__(16);
 
 (function() {
-    
+
     /**
      * Creates a pair.
      * @method create
@@ -4491,7 +4491,7 @@ var Contact = __webpack_require__(16);
             parentA = collision.parentA,
             parentB = collision.parentB,
             parentAVerticesLength = parentA.vertices.length;
-        
+
         pair.isActive = true;
         pair.timeUpdated = timestamp;
         pair.collision = collision;
@@ -4504,7 +4504,7 @@ var Contact = __webpack_require__(16);
 
         collision.pair = pair;
         activeContacts.length = 0;
-        
+
         for (var i = 0; i < supports.length; i++) {
             var support = supports[i],
                 contactId = support.body === parentA ? support.index : parentAVerticesLength + support.index,
@@ -4517,7 +4517,7 @@ var Contact = __webpack_require__(16);
             }
         }
     };
-    
+
     /**
      * Set a pair as active or inactive.
      * @method setActive
@@ -4608,7 +4608,7 @@ var Common = __webpack_require__(0);
         var initialPointA = constraint.bodyA ? Vector.add(constraint.bodyA.position, constraint.pointA) : constraint.pointA,
             initialPointB = constraint.bodyB ? Vector.add(constraint.bodyB.position, constraint.pointB) : constraint.pointB,
             length = Vector.magnitude(Vector.sub(initialPointA, initialPointB));
-    
+
         constraint.length = typeof constraint.length !== 'undefined' ? constraint.length : length;
 
         // option defaults
@@ -4718,7 +4718,7 @@ var Common = __webpack_require__(0);
             Vector.rotate(pointA, bodyA.angle - constraint.angleA, pointA);
             constraint.angleA = bodyA.angle;
         }
-        
+
         // update reference angle
         if (bodyB && !bodyB.isStatic) {
             Vector.rotate(pointB, bodyB.angle - constraint.angleB, pointB);
@@ -4745,7 +4745,7 @@ var Common = __webpack_require__(0);
         // solve distance constraint with Gauss-Siedel method
         var difference = (currentLength - constraint.length) / currentLength,
             isRigid = constraint.stiffness >= 1 || constraint.length === 0,
-            stiffness = isRigid ? constraint.stiffness * timeScale 
+            stiffness = isRigid ? constraint.stiffness * timeScale
                 : constraint.stiffness * timeScale * timeScale,
             damping = constraint.damping * timeScale,
             force = Vector.mult(delta, difference * stiffness),
@@ -4757,7 +4757,7 @@ var Common = __webpack_require__(0);
             normal,
             normalVelocity,
             relativeVelocity;
-    
+
         if (damping > 0) {
             var zero = Vector.create();
             normal = Vector.div(delta, currentLength);
@@ -4799,7 +4799,7 @@ var Common = __webpack_require__(0);
             // keep track of applied impulses for post solving
             bodyB.constraintImpulse.x += force.x * share;
             bodyB.constraintImpulse.y += force.y * share;
-            
+
             // apply forces
             bodyB.position.x += force.x * share;
             bodyB.position.y += force.y * share;
@@ -4838,7 +4838,7 @@ var Common = __webpack_require__(0);
             // update geometry and reset
             for (var j = 0; j < body.parts.length; j++) {
                 var part = body.parts[j];
-                
+
                 Vertices.translate(part.vertices, impulse);
 
                 if (j > 0) {
@@ -4872,9 +4872,9 @@ var Common = __webpack_require__(0);
      */
     Constraint.pointAWorld = function(constraint) {
         return {
-            x: (constraint.bodyA ? constraint.bodyA.position.x : 0) 
+            x: (constraint.bodyA ? constraint.bodyA.position.x : 0)
                 + (constraint.pointA ? constraint.pointA.x : 0),
-            y: (constraint.bodyA ? constraint.bodyA.position.y : 0) 
+            y: (constraint.bodyA ? constraint.bodyA.position.y : 0)
                 + (constraint.pointA ? constraint.pointA.y : 0)
         };
     };
@@ -4887,9 +4887,9 @@ var Common = __webpack_require__(0);
      */
     Constraint.pointBWorld = function(constraint) {
         return {
-            x: (constraint.bodyB ? constraint.bodyB.position.x : 0) 
+            x: (constraint.bodyB ? constraint.bodyB.position.x : 0)
                 + (constraint.pointB ? constraint.pointB.x : 0),
-            y: (constraint.bodyB ? constraint.bodyB.position.y : 0) 
+            y: (constraint.bodyB ? constraint.bodyB.position.y : 0)
                 + (constraint.pointB ? constraint.pointB.y : 0)
         };
     };
@@ -4958,7 +4958,7 @@ var Common = __webpack_require__(0);
      */
 
     /**
-     * A `String` that defines the constraint rendering type. 
+     * A `String` that defines the constraint rendering type.
      * The possible values are 'line', 'pin', 'spring'.
      * An appropriate render type will be automatically chosen unless one is given in options.
      *
@@ -5018,7 +5018,7 @@ var Common = __webpack_require__(0);
      */
 
     /**
-     * A `Number` that specifies the damping of the constraint, 
+     * A `Number` that specifies the damping of the constraint,
      * i.e. the amount of resistance applied to each body based on their velocities to limit the amount of oscillation.
      * Damping will only be apparent when the constraint also has a very low `stiffness`.
      * A value of `0.1` means the constraint will apply heavy damping, resulting in little to no oscillation.
@@ -5030,7 +5030,7 @@ var Common = __webpack_require__(0);
      */
 
     /**
-     * A `Number` that specifies the target resting length of the constraint. 
+     * A `Number` that specifies the target resting length of the constraint.
      * It is calculated automatically in `Constraint.create` from initial positions of the `constraint.bodyA` and `constraint.bodyB`.
      *
      * @property length
@@ -5077,13 +5077,13 @@ var Common = __webpack_require__(0);
 
         // find the unique axes, using edge normal gradients
         for (var i = 0; i < vertices.length; i++) {
-            var j = (i + 1) % vertices.length, 
-                normal = Vector.normalise({ 
-                    x: vertices[j].y - vertices[i].y, 
+            var j = (i + 1) % vertices.length,
+                normal = Vector.normalise({
+                    x: vertices[j].y - vertices[i].y,
                     y: vertices[i].x - vertices[j].x
                 }),
                 gradient = (normal.y === 0) ? Infinity : (normal.x / normal.y);
-            
+
             // limit precision
             gradient = gradient.toFixed(3).toString();
             axes[gradient] = normal;
@@ -5101,7 +5101,7 @@ var Common = __webpack_require__(0);
     Axes.rotate = function(axes, angle) {
         if (angle === 0)
             return;
-        
+
         var cos = Math.cos(angle),
             sin = Math.sin(angle);
 
@@ -5122,7 +5122,7 @@ var Common = __webpack_require__(0);
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
-* The `Matter.Bodies` module contains factory methods for creating rigid body models 
+* The `Matter.Bodies` module contains factory methods for creating rigid body models
 * with commonly used body configurations (such as rectangles, circles and other polygons).
 *
 * See the included usage [examples](https://github.com/liabru/matter-js/tree/master/examples).
@@ -5145,7 +5145,7 @@ var Vector = __webpack_require__(2);
 (function() {
 
     /**
-     * Creates a new rigid body model with a rectangle hull. 
+     * Creates a new rigid body model with a rectangle hull.
      * The options parameter is an object that specifies any properties you wish to override the defaults.
      * See the properties section of the `Matter.Body` module for detailed information on what you can pass via the `options` object.
      * @method rectangle
@@ -5159,7 +5159,7 @@ var Vector = __webpack_require__(2);
     Bodies.rectangle = function(x, y, width, height, options) {
         options = options || {};
 
-        var rectangle = { 
+        var rectangle = {
             label: 'Rectangle Body',
             position: { x: x, y: y },
             vertices: Vertices.fromPath('L 0 0 L ' + width + ' 0 L ' + width + ' ' + height + ' L 0 ' + height)
@@ -5167,16 +5167,16 @@ var Vector = __webpack_require__(2);
 
         if (options.chamfer) {
             var chamfer = options.chamfer;
-            rectangle.vertices = Vertices.chamfer(rectangle.vertices, chamfer.radius, 
+            rectangle.vertices = Vertices.chamfer(rectangle.vertices, chamfer.radius,
                 chamfer.quality, chamfer.qualityMin, chamfer.qualityMax);
             delete options.chamfer;
         }
 
         return Body.create(Common.extend({}, rectangle, options));
     };
-    
+
     /**
-     * Creates a new rigid body model with a trapezoid hull. 
+     * Creates a new rigid body model with a trapezoid hull.
      * The options parameter is an object that specifies any properties you wish to override the defaults.
      * See the properties section of the `Matter.Body` module for detailed information on what you can pass via the `options` object.
      * @method trapezoid
@@ -5193,7 +5193,7 @@ var Vector = __webpack_require__(2);
 
         slope *= 0.5;
         var roof = (1 - (slope * 2)) * width;
-        
+
         var x1 = width * slope,
             x2 = x1 + roof,
             x3 = x2 + x1,
@@ -5205,7 +5205,7 @@ var Vector = __webpack_require__(2);
             verticesPath = 'L 0 0 L ' + x2 + ' ' + (-height) + ' L ' + x3 + ' 0';
         }
 
-        var trapezoid = { 
+        var trapezoid = {
             label: 'Trapezoid Body',
             position: { x: x, y: y },
             vertices: Vertices.fromPath(verticesPath)
@@ -5213,7 +5213,7 @@ var Vector = __webpack_require__(2);
 
         if (options.chamfer) {
             var chamfer = options.chamfer;
-            trapezoid.vertices = Vertices.chamfer(trapezoid.vertices, chamfer.radius, 
+            trapezoid.vertices = Vertices.chamfer(trapezoid.vertices, chamfer.radius,
                 chamfer.quality, chamfer.qualityMin, chamfer.qualityMax);
             delete options.chamfer;
         }
@@ -5222,7 +5222,7 @@ var Vector = __webpack_require__(2);
     };
 
     /**
-     * Creates a new rigid body model with a circle hull. 
+     * Creates a new rigid body model with a circle hull.
      * The options parameter is an object that specifies any properties you wish to override the defaults.
      * See the properties section of the `Matter.Body` module for detailed information on what you can pass via the `options` object.
      * @method circle
@@ -5240,7 +5240,7 @@ var Vector = __webpack_require__(2);
             label: 'Circle Body',
             circleRadius: radius
         };
-        
+
         // approximate circles with polygons until true circles implemented in SAT
         maxSides = maxSides || 25;
         var sides = Math.ceil(Math.max(10, Math.min(maxSides, radius)));
@@ -5253,7 +5253,7 @@ var Vector = __webpack_require__(2);
     };
 
     /**
-     * Creates a new rigid body model with a regular polygon hull with the given number of sides. 
+     * Creates a new rigid body model with a regular polygon hull with the given number of sides.
      * The options parameter is an object that specifies any properties you wish to override the defaults.
      * See the properties section of the `Matter.Body` module for detailed information on what you can pass via the `options` object.
      * @method polygon
@@ -5282,7 +5282,7 @@ var Vector = __webpack_require__(2);
             path += 'L ' + xx.toFixed(3) + ' ' + yy.toFixed(3) + ' ';
         }
 
-        var polygon = { 
+        var polygon = {
             label: 'Polygon Body',
             position: { x: x, y: y },
             vertices: Vertices.fromPath(path)
@@ -5290,7 +5290,7 @@ var Vector = __webpack_require__(2);
 
         if (options.chamfer) {
             var chamfer = options.chamfer;
-            polygon.vertices = Vertices.chamfer(polygon.vertices, chamfer.radius, 
+            polygon.vertices = Vertices.chamfer(polygon.vertices, chamfer.radius,
                 chamfer.quality, chamfer.qualityMin, chamfer.qualityMax);
             delete options.chamfer;
         }
@@ -5300,26 +5300,26 @@ var Vector = __webpack_require__(2);
 
     /**
      * Utility to create a compound body based on set(s) of vertices.
-     * 
-     * _Note:_ To optionally enable automatic concave vertices decomposition the [poly-decomp](https://github.com/schteppe/poly-decomp.js) 
+     *
+     * _Note:_ To optionally enable automatic concave vertices decomposition the [poly-decomp](https://github.com/schteppe/poly-decomp.js)
      * package must be first installed and provided see `Common.setDecomp`, otherwise the convex hull of each vertex set will be used.
-     * 
+     *
      * The resulting vertices are reorientated about their centre of mass,
      * and offset such that `body.position` corresponds to this point.
-     * 
+     *
      * The resulting offset may be found if needed by subtracting `body.bounds` from the original input bounds.
      * To later move the centre of mass see `Body.setCentre`.
-     * 
-     * Note that automatic conconcave decomposition results are not always optimal. 
+     *
+     * Note that automatic conconcave decomposition results are not always optimal.
      * For best results, simplify the input vertices as much as possible first.
      * By default this function applies some addtional simplification to help.
-     * 
+     *
      * Some outputs may also require further manual processing afterwards to be robust.
      * In particular some parts may need to be overlapped to avoid collision gaps.
      * Thin parts and sharp points should be avoided or removed where possible.
      *
      * The options parameter object specifies any `Matter.Body` properties you wish to override the defaults.
-     * 
+     *
      * See the properties section of the `Matter.Body` module for detailed information on what you can pass via the `options` object.
      * @method fromVertices
      * @param {number} x
@@ -5536,7 +5536,7 @@ var Collision = __webpack_require__(8);
 
     /**
      * Efficiently finds all collisions among all the bodies in `detector.bodies` using a broadphase algorithm.
-     * 
+     *
      * _Note:_ The specific ordering of collisions returned is not guaranteed between releases and may change for performance reasons.
      * If a specific ordering is required then apply a sort to the resulting array.
      * @method collisions
@@ -5596,7 +5596,7 @@ var Collision = __webpack_require__(8);
                 } else {
                     var partsAStart = partsALength > 1 ? 1 : 0,
                         partsBStart = partsBLength > 1 ? 1 : 0;
-                    
+
                     for (var k = partsAStart; k < partsALength; k++) {
                         var partA = bodyA.parts[k],
                             boundsA = partA.bounds;
@@ -5660,7 +5660,7 @@ var Collision = __webpack_require__(8);
 
     /**
      * The array of `Matter.Body` between which the detector finds collisions.
-     * 
+     *
      * _Note:_ The order of bodies in this array _is not fixed_ and will be continually managed by the detector.
      * @property bodies
      * @type body[]
@@ -5707,7 +5707,7 @@ var Common = __webpack_require__(0);
         if (!element) {
             Common.log('Mouse.create: element was undefined, defaulting to document.body', 'warn');
         }
-        
+
         mouse.element = element || document.body;
         mouse.absolute = { x: 0, y: 0 };
         mouse.position = { x: 0, y: 0 };
@@ -5725,8 +5725,8 @@ var Common = __webpack_require__(0);
             mouseup: null,
             mousewheel: null
         };
-        
-        mouse.mousemove = function(event) { 
+
+        mouse.mousemove = function(event) {
             var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio),
                 touches = event.changedTouches;
 
@@ -5741,7 +5741,7 @@ var Common = __webpack_require__(0);
             mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
             mouse.sourceEvents.mousemove = event;
         };
-        
+
         mouse.mousedown = function(event) {
             var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio),
                 touches = event.changedTouches;
@@ -5761,7 +5761,7 @@ var Common = __webpack_require__(0);
             mouse.mousedownPosition.y = mouse.position.y;
             mouse.sourceEvents.mousedown = event;
         };
-        
+
         mouse.mouseup = function(event) {
             var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio),
                 touches = event.changedTouches;
@@ -5769,7 +5769,7 @@ var Common = __webpack_require__(0);
             if (touches) {
                 event.preventDefault();
             }
-            
+
             mouse.button = -1;
             mouse.absolute.x = position.x;
             mouse.absolute.y = position.y;
@@ -5802,7 +5802,7 @@ var Common = __webpack_require__(0);
         element.addEventListener('mousemove', mouse.mousemove);
         element.addEventListener('mousedown', mouse.mousedown);
         element.addEventListener('mouseup', mouse.mouseup);
-        
+
         element.addEventListener('mousewheel', mouse.mousewheel);
         element.addEventListener('DOMMouseScroll', mouse.mousewheel);
 
@@ -5849,7 +5849,7 @@ var Common = __webpack_require__(0);
         mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
         mouse.position.y = mouse.absolute.y * mouse.scale.y + mouse.offset.y;
     };
-    
+
     /**
      * Gets the mouse position relative to an element given a screen pixel ratio.
      * @method _getRelativeMousePosition
@@ -5866,7 +5866,7 @@ var Common = __webpack_require__(0);
             scrollY = (window.pageYOffset !== undefined) ? window.pageYOffset : rootNode.scrollTop,
             touches = event.changedTouches,
             x, y;
-        
+
         if (touches) {
             x = touches[0].pageX - elementBounds.left - scrollX;
             y = touches[0].pageY - elementBounds.top - scrollY;
@@ -5875,7 +5875,7 @@ var Common = __webpack_require__(0);
             y = event.pageY - elementBounds.top - scrollY;
         }
 
-        return { 
+        return {
             x: x / (element.clientWidth / (element.width || element.clientWidth) * pixelRatio),
             y: y / (element.clientHeight / (element.height || element.clientHeight) * pixelRatio)
         };
@@ -5936,7 +5936,7 @@ var Common = __webpack_require__(0);
     };
 
     /**
-     * Resolves a dependency to a plugin object from the registry if it exists. 
+     * Resolves a dependency to a plugin object from the registry if it exists.
      * The `dependency` may contain a version, but only the name matters when resolving.
      * @method resolve
      * @param dependency {string} The dependency.
@@ -6149,7 +6149,7 @@ var Common = __webpack_require__(0);
     };
 
     /**
-     * Parses a version string into its components.  
+     * Parses a version string into its components.
      * Versions are strictly of the format `x.y.z` (as in [semver](http://semver.org/)).
      * Versions may optionally have a prerelease tag in the format `x.y.z-alpha`.
      * Ranges are a strict subset of [npm ranges](https://docs.npmjs.com/misc/semver#advanced-range-syntax).
@@ -6346,7 +6346,7 @@ var Body = __webpack_require__(4);
         engine.world.gravity = engine.gravity;
         engine.broadphase = engine.grid;
         engine.metrics = {};
-        
+
         return engine;
     };
 
@@ -6432,7 +6432,7 @@ var Body = __webpack_require__(4);
 
         // iteratively resolve position between collisions
         var positionDamping = Common.clamp(20 / engine.positionIterations, 0, 1);
-        
+
         Resolver.preSolvePosition(pairs.list);
         for (i = 0; i < engine.positionIterations; i++) {
             Resolver.solvePosition(pairs.list, delta, positionDamping);
@@ -6472,7 +6472,7 @@ var Body = __webpack_require__(4);
 
         return engine;
     };
-    
+
     /**
      * Merges two engines by keeping the configuration of `engineA` but replacing the world with the one from `engineB`.
      * @method merge
@@ -6481,7 +6481,7 @@ var Body = __webpack_require__(4);
      */
     Engine.merge = function(engineA, engineB) {
         Common.extend(engineA, engineB);
-        
+
         if (engineB.world) {
             engineA.world = engineB.world;
 
@@ -6529,7 +6529,7 @@ var Body = __webpack_require__(4);
     /**
      * Applies gravitational acceleration to all `bodies`.
      * This models a [uniform gravitational field](https://en.wikipedia.org/wiki/Gravity_of_Earth), similar to near the surface of a planet.
-     * 
+     *
      * @method _bodiesApplyGravity
      * @private
      * @param {body[]} bodies
@@ -6542,7 +6542,7 @@ var Body = __webpack_require__(4);
         if ((gravity.x === 0 && gravity.y === 0) || gravityScale === 0) {
             return;
         }
-        
+
         for (var i = 0; i < bodiesLength; i++) {
             var body = bodies[i];
 
@@ -6698,7 +6698,7 @@ var Body = __webpack_require__(4);
      */
 
     /**
-     * An `Object` containing properties regarding the timing systems of the engine. 
+     * An `Object` containing properties regarding the timing systems of the engine.
      *
      * @property timing
      * @type object
@@ -6716,9 +6716,9 @@ var Body = __webpack_require__(4);
      */
 
     /**
-     * A `Number` that specifies the current simulation-time in milliseconds starting from `0`. 
-     * It is incremented on every `Engine.update` by the given `delta` argument. 
-     * 
+     * A `Number` that specifies the current simulation-time in milliseconds starting from `0`.
+     * It is incremented on every `Engine.update` by the given `delta` argument.
+     *
      * @property timing.timestamp
      * @type number
      * @default 0
@@ -6729,7 +6729,7 @@ var Body = __webpack_require__(4);
      * It is updated by timing from the start of the last `Engine.update` call until it ends.
      *
      * This value will also include the total execution time of all event handlers directly or indirectly triggered by the engine update.
-     * 
+     *
      * @property timing.lastElapsed
      * @type number
      * @default 0
@@ -6737,7 +6737,7 @@ var Body = __webpack_require__(4);
 
     /**
      * A `Number` that represents the `delta` value used in the last engine update.
-     * 
+     *
      * @property timing.lastDelta
      * @type number
      * @default 0
@@ -6786,12 +6786,12 @@ var Body = __webpack_require__(4);
 
     /**
      * An optional gravitational acceleration applied to all bodies in `engine.world` on every update.
-     * 
+     *
      * This models a [uniform gravitational field](https://en.wikipedia.org/wiki/Gravity_of_Earth), similar to near the surface of a planet. For gravity in other contexts, disable this and apply forces as needed.
-     * 
+     *
      * To disable set the `scale` component to `0`.
-     * 
-     * This is split into three components for ease of use:  
+     *
+     * This is split into three components for ease of use:
      * a normalised direction (`x` and `y`) and magnitude (`scale`).
      *
      * @property gravity
@@ -6800,7 +6800,7 @@ var Body = __webpack_require__(4);
 
     /**
      * The gravitational direction normal `x` component, to be multiplied by `gravity.scale`.
-     * 
+     *
      * @property gravity.x
      * @type object
      * @default 0
@@ -6816,7 +6816,7 @@ var Body = __webpack_require__(4);
 
     /**
      * The magnitude of the gravitational acceleration.
-     * 
+     *
      * @property gravity.scale
      * @type object
      * @default 0.001
@@ -6866,10 +6866,10 @@ var Bounds = __webpack_require__(1);
         // find total contacts on each body
         for (i = 0; i < pairsLength; i++) {
             pair = pairs[i];
-            
+
             if (!pair.isActive)
                 continue;
-            
+
             activeCount = pair.activeContacts.length;
             pair.collision.parentA.totalContacts += activeCount;
             pair.collision.parentB.totalContacts += activeCount;
@@ -6899,7 +6899,7 @@ var Bounds = __webpack_require__(1);
         // find impulses required to resolve penetration
         for (i = 0; i < pairsLength; i++) {
             pair = pairs[i];
-            
+
             if (!pair.isActive || pair.isSensor)
                 continue;
 
@@ -6909,17 +6909,17 @@ var Bounds = __webpack_require__(1);
             normal = collision.normal;
 
             // get current separation between body edges involved in collision
-            pair.separation = 
+            pair.separation =
                 normal.x * (bodyB.positionImpulse.x + collision.penetration.x - bodyA.positionImpulse.x)
                 + normal.y * (bodyB.positionImpulse.y + collision.penetration.y - bodyA.positionImpulse.y);
         }
-        
+
         for (i = 0; i < pairsLength; i++) {
             pair = pairs[i];
 
             if (!pair.isActive || pair.isSensor)
                 continue;
-            
+
             collision = pair.collision;
             bodyA = collision.parentA;
             bodyB = collision.parentB;
@@ -6928,7 +6928,7 @@ var Bounds = __webpack_require__(1);
 
             if (bodyA.isStatic || bodyB.isStatic)
                 positionImpulse *= 2;
-            
+
             if (!(bodyA.isStatic || bodyA.isSleeping)) {
                 contactShare = positionDampen / bodyA.totalContacts;
                 bodyA.positionImpulse.x += normal.x * positionImpulse * contactShare;
@@ -7000,13 +7000,13 @@ var Bounds = __webpack_require__(1);
         var pairsLength = pairs.length,
             i,
             j;
-        
+
         for (i = 0; i < pairsLength; i++) {
             var pair = pairs[i];
-            
+
             if (!pair.isActive || pair.isSensor)
                 continue;
-            
+
             var contacts = pair.activeContacts,
                 contactsLength = contacts.length,
                 collision = pair.collision,
@@ -7014,19 +7014,19 @@ var Bounds = __webpack_require__(1);
                 bodyB = collision.parentB,
                 normal = collision.normal,
                 tangent = collision.tangent;
-    
+
             // resolve each contact
             for (j = 0; j < contactsLength; j++) {
                 var contact = contacts[j],
                     contactVertex = contact.vertex,
                     normalImpulse = contact.normalImpulse,
                     tangentImpulse = contact.tangentImpulse;
-    
+
                 if (normalImpulse !== 0 || tangentImpulse !== 0) {
                     // total impulse from contact
                     var impulseX = normal.x * normalImpulse + tangent.x * tangentImpulse,
                         impulseY = normal.y * normalImpulse + tangent.y * tangentImpulse;
-                    
+
                     // apply impulse from contact
                     if (!(bodyA.isStatic || bodyA.isSleeping)) {
                         bodyA.positionPrev.x += impulseX * bodyA.inverseMass;
@@ -7036,12 +7036,12 @@ var Bounds = __webpack_require__(1);
                             - (contactVertex.y - bodyA.position.y) * impulseX
                         );
                     }
-    
+
                     if (!(bodyB.isStatic || bodyB.isSleeping)) {
                         bodyB.positionPrev.x -= impulseX * bodyB.inverseMass;
                         bodyB.positionPrev.y -= impulseY * bodyB.inverseMass;
                         bodyB.anglePrev -= bodyB.inverseInertia * (
-                            (contactVertex.x - bodyB.position.x) * impulseY 
+                            (contactVertex.x - bodyB.position.x) * impulseY
                             - (contactVertex.y - bodyB.position.y) * impulseX
                         );
                     }
@@ -7072,10 +7072,10 @@ var Bounds = __webpack_require__(1);
 
         for (i = 0; i < pairsLength; i++) {
             var pair = pairs[i];
-            
+
             if (!pair.isActive || pair.isSensor)
                 continue;
-            
+
             var collision = pair.collision,
                 bodyA = collision.parentA,
                 bodyB = collision.parentB,
@@ -7108,7 +7108,7 @@ var Bounds = __webpack_require__(1);
                     offsetAY = contactVertex.y - bodyA.position.y,
                     offsetBX = contactVertex.x - bodyB.position.x,
                     offsetBY = contactVertex.y - bodyB.position.y;
- 
+
                 var velocityPointAX = bodyAVelocity.x - offsetAY * bodyA.angularVelocity,
                     velocityPointAY = bodyAVelocity.y + offsetAX * bodyA.angularVelocity,
                     velocityPointBX = bodyBVelocity.x - offsetBY * bodyB.angularVelocity,
@@ -7130,7 +7130,7 @@ var Bounds = __webpack_require__(1);
                 if (tangentVelocity < -frictionLimit || tangentVelocity > frictionLimit) {
                     maxFriction = (tangentVelocity > 0 ? tangentVelocity : -tangentVelocity);
                     tangentImpulse = pair.friction * (tangentVelocity > 0 ? 1 : -1) * timeScaleCubed;
-                    
+
                     if (tangentImpulse < -maxFriction) {
                         tangentImpulse = -maxFriction;
                     } else if (tangentImpulse > maxFriction) {
@@ -7180,7 +7180,7 @@ var Bounds = __webpack_require__(1);
                 // total impulse from contact
                 var impulseX = normalX * normalImpulse + tangentX * tangentImpulse,
                     impulseY = normalY * normalImpulse + tangentY * tangentImpulse;
-                
+
                 // apply impulse from contact
                 if (!(bodyA.isStatic || bodyA.isSleeping)) {
                     bodyA.positionPrev.x += impulseX * bodyA.inverseMass;
@@ -7226,7 +7226,7 @@ var Common = __webpack_require__(0);
      * @return {pairs} A new pairs structure
      */
     Pairs.create = function(options) {
-        return Common.extend({ 
+        return Common.extend({
             table: {},
             list: [],
             collisionStart: [],
@@ -7298,7 +7298,7 @@ var Common = __webpack_require__(0);
 
         for (i = 0; i < pairsListLength; i++) {
             pair = pairsList[i];
-            
+
             if (!pair.confirmedActive) {
                 Pair.setActive(pair, false, timestamp);
                 collisionEnd.push(pair);
@@ -7517,37 +7517,37 @@ var deprecated = Common.deprecated;
 
         for (var row = 0; row < rows; row++) {
             var maxHeight = 0;
-            
+
             for (var column = 0; column < columns; column++) {
                 var body = callback(x, y, column, row, lastBody, i);
-                    
+
                 if (body) {
                     var bodyHeight = body.bounds.max.y - body.bounds.min.y,
-                        bodyWidth = body.bounds.max.x - body.bounds.min.x; 
+                        bodyWidth = body.bounds.max.x - body.bounds.min.x;
 
                     if (bodyHeight > maxHeight)
                         maxHeight = bodyHeight;
-                    
+
                     Body.translate(body, { x: bodyWidth * 0.5, y: bodyHeight * 0.5 });
 
                     x = body.bounds.max.x + columnGap;
 
                     Composite.addBody(stack, body);
-                    
+
                     lastBody = body;
                     i += 1;
                 } else {
                     x += columnGap;
                 }
             }
-            
+
             y += maxHeight + rowGap;
             x = xx;
         }
 
         return stack;
     };
-    
+
     /**
      * Chains all bodies in the given composite together using constraints.
      * @method chain
@@ -7561,29 +7561,29 @@ var deprecated = Common.deprecated;
      */
     Composites.chain = function(composite, xOffsetA, yOffsetA, xOffsetB, yOffsetB, options) {
         var bodies = composite.bodies;
-        
+
         for (var i = 1; i < bodies.length; i++) {
             var bodyA = bodies[i - 1],
                 bodyB = bodies[i],
                 bodyAHeight = bodyA.bounds.max.y - bodyA.bounds.min.y,
-                bodyAWidth = bodyA.bounds.max.x - bodyA.bounds.min.x, 
+                bodyAWidth = bodyA.bounds.max.x - bodyA.bounds.min.x,
                 bodyBHeight = bodyB.bounds.max.y - bodyB.bounds.min.y,
                 bodyBWidth = bodyB.bounds.max.x - bodyB.bounds.min.x;
-        
+
             var defaults = {
                 bodyA: bodyA,
                 pointA: { x: bodyAWidth * xOffsetA, y: bodyAHeight * yOffsetA },
                 bodyB: bodyB,
                 pointB: { x: bodyBWidth * xOffsetB, y: bodyBHeight * yOffsetB }
             };
-            
+
             var constraint = Common.extend(defaults, options);
-        
+
             Composite.addConstraint(composite, Constraint.create(constraint));
         }
 
         composite.label += ' Chain';
-        
+
         return composite;
     };
 
@@ -7604,7 +7604,7 @@ var deprecated = Common.deprecated;
             bodyA,
             bodyB,
             bodyC;
-        
+
         for (row = 0; row < rows; row++) {
             for (col = 1; col < columns; col++) {
                 bodyA = bodies[(col - 1) + (row * columns)];
@@ -7632,10 +7632,10 @@ var deprecated = Common.deprecated;
         }
 
         composite.label += ' Mesh';
-        
+
         return composite;
     };
-    
+
     /**
      * Create a new composite containing bodies created in the callback in a pyramid arrangement.
      * This function uses the body's bounds to prevent overlaps.
@@ -7653,26 +7653,26 @@ var deprecated = Common.deprecated;
         return Composites.stack(xx, yy, columns, rows, columnGap, rowGap, function(x, y, column, row, lastBody, i) {
             var actualRows = Math.min(rows, Math.ceil(columns / 2)),
                 lastBodyWidth = lastBody ? lastBody.bounds.max.x - lastBody.bounds.min.x : 0;
-            
+
             if (row > actualRows)
                 return;
-            
+
             // reverse row order
             row = actualRows - row;
-            
+
             var start = row,
                 end = columns - 1 - row;
 
             if (column < start || column > end)
                 return;
-            
+
             // retroactively fix the first body's position, since width was unknown
             if (i === 1) {
                 Body.translate(lastBody, { x: (column + (columns % 2 === 1 ? 1 : -1)) * lastBodyWidth, y: 0 });
             }
 
             var xOffset = lastBody ? column * lastBodyWidth : 0;
-            
+
             return callback(xx + xOffset + column * columnGap, y, column, row, lastBody, i);
         });
     };
@@ -7693,7 +7693,7 @@ var deprecated = Common.deprecated;
 
         for (var i = 0; i < number; i++) {
             var separation = 1.9,
-                circle = Bodies.circle(xx + i * (size * separation), yy + length, size, 
+                circle = Bodies.circle(xx + i * (size * separation), yy + length, size,
                     { inertia: Infinity, restitution: 1, friction: 0, frictionAir: 0.0001, slop: 1 }),
                 constraint = Constraint.create({ pointA: { x: xx + i * (size * separation), y: yy }, bodyB: circle });
 
@@ -7705,7 +7705,7 @@ var deprecated = Common.deprecated;
     };
 
     deprecated(Composites, 'newtonsCradle', 'Composites.newtonsCradle ➤ moved to newtonsCradle example');
-    
+
     /**
      * This has now moved to the [car example](https://github.com/liabru/matter-js/blob/master/examples/car.js), follow that instead as this function is deprecated here.
      * @deprecated moved to car example
@@ -7723,9 +7723,9 @@ var deprecated = Common.deprecated;
             wheelAOffset = -width * 0.5 + wheelBase,
             wheelBOffset = width * 0.5 - wheelBase,
             wheelYOffset = 0;
-    
+
         var car = Composite.create({ label: 'Car' }),
-            body = Bodies.rectangle(xx, yy, width, height, { 
+            body = Bodies.rectangle(xx, yy, width, height, {
                 collisionFilter: {
                     group: group
                 },
@@ -7734,21 +7734,21 @@ var deprecated = Common.deprecated;
                 },
                 density: 0.0002
             });
-    
-        var wheelA = Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, { 
+
+        var wheelA = Bodies.circle(xx + wheelAOffset, yy + wheelYOffset, wheelSize, {
             collisionFilter: {
                 group: group
             },
             friction: 0.8
         });
-                    
-        var wheelB = Bodies.circle(xx + wheelBOffset, yy + wheelYOffset, wheelSize, { 
+
+        var wheelB = Bodies.circle(xx + wheelBOffset, yy + wheelYOffset, wheelSize, {
             collisionFilter: {
                 group: group
             },
             friction: 0.8
         });
-                    
+
         var axelA = Constraint.create({
             bodyB: body,
             pointB: { x: wheelAOffset, y: wheelYOffset },
@@ -7756,7 +7756,7 @@ var deprecated = Common.deprecated;
             stiffness: 1,
             length: 0
         });
-                        
+
         var axelB = Constraint.create({
             bodyB: body,
             pointB: { x: wheelBOffset, y: wheelYOffset },
@@ -7764,7 +7764,7 @@ var deprecated = Common.deprecated;
             stiffness: 1,
             length: 0
         });
-        
+
         Composite.addBody(car, body);
         Composite.addBody(car, wheelA);
         Composite.addBody(car, wheelB);
@@ -8019,12 +8019,12 @@ var deprecated = Common.deprecated;
      * @return {} region
      */
     Grid._createRegion = function(startCol, endCol, startRow, endRow) {
-        return { 
+        return {
             id: startCol + ',' + endCol + ',' + startRow + ',' + endRow,
-            startCol: startCol, 
-            endCol: endCol, 
-            startRow: startRow, 
-            endRow: endRow 
+            startCol: startCol,
+            endCol: endCol,
+            startRow: startRow,
+            endRow: endRow
         };
     };
 
@@ -8154,7 +8154,7 @@ var deprecated = Common.deprecated;
 
         return pairs;
     };
-    
+
 })();
 
 
@@ -8210,11 +8210,11 @@ var Bounds = __webpack_require__(1);
             }
         }
 
-        var constraint = Constraint.create({ 
+        var constraint = Constraint.create({
             label: 'Mouse Constraint',
             pointA: mouse.position,
             pointB: { x: 0, y: 0 },
-            length: 0.01, 
+            length: 0.01,
             stiffness: 0.1,
             angularStiffness: 1,
             render: {
@@ -8263,7 +8263,7 @@ var Bounds = __webpack_require__(1);
             if (!constraint.bodyB) {
                 for (var i = 0; i < bodies.length; i++) {
                     body = bodies[i];
-                    if (Bounds.contains(body.bounds, mouse.position) 
+                    if (Bounds.contains(body.bounds, mouse.position)
                             && Detector.canCollide(body.collisionFilter, mouseConstraint.collisionFilter)) {
                         for (var j = body.parts.length > 1 ? 1 : 0; j < body.parts.length; j++) {
                             var part = body.parts[j];
@@ -8467,7 +8467,7 @@ var Vertices = __webpack_require__(3);
             var bodyA = bodies[i],
                 partsALength = bodyA.parts.length,
                 partsAStart = partsALength === 1 ? 0 : 1;
-            
+
             if (overlaps(bodyA.bounds, bounds)) {
                 for (var j = partsAStart; j < partsALength; j++) {
                     var part = bodyA.parts[j];
@@ -8508,7 +8508,7 @@ var Vertices = __webpack_require__(3);
 
         for (var i = 0; i < collisions.length; i += 1) {
             var collision = collisions[i];
-            collision.body = collision.bodyB = collision.bodyA;            
+            collision.body = collision.bodyB = collision.bodyA;
         }
 
         return collisions;
@@ -8547,7 +8547,7 @@ var Vertices = __webpack_require__(3);
 
         for (var i = 0; i < bodies.length; i++) {
             var body = bodies[i];
-            
+
             if (Bounds.contains(body.bounds, point)) {
                 for (var j = body.parts.length === 1 ? 0 : 1; j < body.parts.length; j++) {
                     var part = body.parts[j];
@@ -8711,7 +8711,7 @@ var Mouse = __webpack_require__(14);
     Render.run = function(render) {
         (function loop(time){
             render.frameRequestId = _requestAnimationFrame(loop);
-            
+
             _updateTiming(render, time);
 
             Render.world(render, time);
@@ -8868,10 +8868,10 @@ var Mouse = __webpack_require__(14);
             boundsScaleY = boundsHeight / render.options.height;
 
         render.context.setTransform(
-            render.options.pixelRatio / boundsScaleX, 0, 0, 
+            render.options.pixelRatio / boundsScaleX, 0, 0,
             render.options.pixelRatio / boundsScaleY, 0, 0
         );
-        
+
         render.context.translate(-render.bounds.min.x, -render.bounds.min.y);
     };
 
@@ -9038,7 +9038,7 @@ var Mouse = __webpack_require__(14);
             height = 44,
             x = 0,
             y = 0;
-        
+
         // count parts
         for (var i = 0; i < bodies.length; i += 1) {
             parts += bodies[i].parts.length;
@@ -9092,7 +9092,7 @@ var Mouse = __webpack_require__(14);
             engineDeltaHistory = timing.engineDeltaHistory,
             engineElapsedHistory = timing.engineElapsedHistory,
             lastEngineDelta = engine.timing.lastDelta;
-        
+
         var deltaMean = _mean(deltaHistory),
             elapsedMean = _mean(elapsedHistory),
             engineDeltaMean = _mean(engineDeltaHistory),
@@ -9114,8 +9114,8 @@ var Mouse = __webpack_require__(14);
 
         // show FPS
         Render.status(
-            context, x, y, width, graphHeight, deltaHistory.length, 
-            Math.round(fps) + ' fps', 
+            context, x, y, width, graphHeight, deltaHistory.length,
+            Math.round(fps) + ' fps',
             fps / Render._goodFps,
             function(i) { return (deltaHistory[i] / deltaMean) - 1; }
         );
@@ -9123,7 +9123,7 @@ var Mouse = __webpack_require__(14);
         // show engine delta
         Render.status(
             context, x + gap + width, y, width, graphHeight, engineDeltaHistory.length,
-            lastEngineDelta.toFixed(2) + ' dt', 
+            lastEngineDelta.toFixed(2) + ' dt',
             Render._goodDelta / lastEngineDelta,
             function(i) { return (engineDeltaHistory[i] / engineDeltaMean) - 1; }
         );
@@ -9131,7 +9131,7 @@ var Mouse = __webpack_require__(14);
         // show engine update time
         Render.status(
             context, x + (gap + width) * 2, y, width, graphHeight, engineElapsedHistory.length,
-            engineElapsedMean.toFixed(2) + ' ut', 
+            engineElapsedMean.toFixed(2) + ' ut',
             1 - (engineElapsedMean / Render._goodFps),
             function(i) { return (engineElapsedHistory[i] / engineElapsedMean) - 1; }
         );
@@ -9139,15 +9139,15 @@ var Mouse = __webpack_require__(14);
         // show render time
         Render.status(
             context, x + (gap + width) * 3, y, width, graphHeight, elapsedHistory.length,
-            elapsedMean.toFixed(2) + ' rt', 
+            elapsedMean.toFixed(2) + ' rt',
             1 - (elapsedMean / Render._goodFps),
             function(i) { return (elapsedHistory[i] / elapsedMean) - 1; }
         );
 
         // show effective speed
         Render.status(
-            context, x + (gap + width) * 4, y, width, graphHeight, timestampElapsedHistory.length, 
-            rateMean.toFixed(2) + ' x', 
+            context, x + (gap + width) * 4, y, width, graphHeight, timestampElapsedHistory.length,
+            rateMean.toFixed(2) + ' x',
             rateMean * rateMean * rateMean,
             function(i) { return (((timestampElapsedHistory[i] / deltaHistory[i]) / rateMean) || 0) - 1; }
         );
@@ -10219,7 +10219,7 @@ var Mouse = __webpack_require__(14);
      */
 
     /**
-     * A flag to enable or disable all debug information overlays together.  
+     * A flag to enable or disable all debug information overlays together.
      * This includes and has priority over the values of:
      *
      * - `render.options.showStats`
@@ -10231,7 +10231,7 @@ var Mouse = __webpack_require__(14);
      */
 
     /**
-     * A flag to enable or disable the engine stats info overlay.  
+     * A flag to enable or disable the engine stats info overlay.
      * From left to right, the values shown are:
      *
      * - body parts total
@@ -10246,7 +10246,7 @@ var Mouse = __webpack_require__(14);
      */
 
     /**
-     * A flag to enable or disable performance charts.  
+     * A flag to enable or disable performance charts.
      * From left to right, the values shown are:
      *
      * - average render frequency (e.g. 60 fps)
@@ -10264,7 +10264,7 @@ var Mouse = __webpack_require__(14);
      * @type boolean
      * @default false
      */
-    
+
     /**
      * A flag to enable or disable rendering entirely.
      *
@@ -10410,7 +10410,7 @@ var Mouse = __webpack_require__(14);
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
-* The `Matter.Runner` module is an optional utility which provides a game loop, 
+* The `Matter.Runner` module is an optional utility which provides a game loop,
 * that handles continuously updating a `Matter.Engine` for you within a browser.
 * It is intended for development and debugging purposes, but may also be suitable for simple games.
 * If you are using your own game loop instead, then you do not need the `Matter.Runner` module.
@@ -10437,17 +10437,17 @@ var Common = __webpack_require__(0);
     if (typeof window !== 'undefined') {
         _requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame
                                       || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
-   
-        _cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame 
+
+        _cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame
                                       || window.webkitCancelAnimationFrame || window.msCancelAnimationFrame;
     }
 
     if (!_requestAnimationFrame) {
         var _frameTimeout;
 
-        _requestAnimationFrame = function(callback){ 
-            _frameTimeout = setTimeout(function() { 
-                callback(Common.now()); 
+        _requestAnimationFrame = function(callback){
+            _frameTimeout = setTimeout(function() {
+                callback(Common.now());
             }, 1000 / 60);
         };
 
@@ -10764,8 +10764,8 @@ var Common = __webpack_require__(0);
         }
 
         // https://github.com/wout/svg.topoly.js/blob/master/svg.topoly.js
-        var i, il, total, point, segment, segments, 
-            segmentsQueue, lastSegment, 
+        var i, il, total, point, segment, segments,
+            segmentsQueue, lastSegment,
             lastPoint, segmentIndex, points = [],
             lx, ly, length = 0, x = 0, y = 0;
 
@@ -10806,7 +10806,7 @@ var Common = __webpack_require__(0);
             var segType = segment.pathSegTypeAsLetter.toUpperCase();
 
             // skip path ends
-            if (segType === 'Z') 
+            if (segType === 'Z')
                 return;
 
             // map segment to x and y
