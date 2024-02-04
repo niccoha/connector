@@ -70,57 +70,8 @@ function setup() {
 
     activeBubble = new ActiveBubble(width/2, height*0.75, 50);
 
-    activeTouchId = "";
-    isMouseDrag = false;
 
 }
-// function touchMoved(){
-//     //On touchMoved, check for an active touch, then follow it with the activeBubble position.
-//     if (touches.length) {
-//         for (var i = 0; i < touches.length; i++) {
-//
-//             if (touches[i].id == activeTouchId){
-//
-//                 activeBubble.follow(touches[i].x, touches[i].y);
-//             }
-//         }
-//     }
-// }
-//
-// function touchStarted(){
-//
-//     isMouseDrag = false;
-//
-//     if(touches.length){
-//         for (var i = 0; i < touches.length; i++) {
-//             //If the touch is on the activeBubble, save its id and its offset to the bubble's center.
-//             if (activeBubble.contains(touches[i].x, touches[i].y)){
-//
-//                 activeTouchId = touches[i].id;
-//                 activeBubble.getOffset(touches[i].x, touches[i].y);
-//
-//                 return;
-//             }
-//         }
-//     }
-// }
-//
-// function mouseDragged(){
-//     if (isMouseDrag) {
-//         activeBubble.follow(mouseX, mouseY);
-//     }
-// }
-//
-// function mousePressed(){
-//     if (activeBubble.contains(mouseX, mouseY)) {
-//         isMouseDrag = true;
-//         activeBubble.getOffset(mouseX, mouseY);
-//     }
-// }
-//
-// function mouseReleased(){
-//     isMouseDrag = false;
-// }
 
 
 function draw() {
@@ -169,7 +120,6 @@ class Bubble{
 
     constructor(x,y,r) {
 
-        // this.posVector = createVector(x,y,r);
         this.r = r;
 
         //create Matter.js body
@@ -184,7 +134,7 @@ class Bubble{
 
     contains(px,py){
         let d = dist(px, py, this.posVector.x, this.posVector.y);
-        // let d = dist(px, py, this.x, this.y);
+
         if(d < this.r){
             return true;
         }else{
@@ -196,7 +146,6 @@ class Bubble{
         fill(r,g,b);
         noStroke();
 
-        // ellipse(this.pos.x, this.pos.x, this.r*2);
         ellipse(this.posVector.x, this.posVector.y, this.r*2);
     }
 }
@@ -213,7 +162,8 @@ class ActiveBubble extends Bubble{
         // console.log(this.body.mass);
         // Body.setMass(this.body, 8);
         this.body.frictionAir = 0.08;
-        //Add mouseConstraint
+
+    //Add mouseConstraint
         this.body.collisionFilter.category = 0b10;
 
         var canvasMouse = Mouse.create(canvas.elt);
@@ -229,6 +179,7 @@ class ActiveBubble extends Bubble{
         mouseConstraint = MouseConstraint.create(engine, options);
         Composite.add(engine.world, mouseConstraint);
     }
+
     isSnapped(){
 
         for (var i = 0; i < passiveBubbles.length; i++) {
@@ -243,31 +194,23 @@ class ActiveBubble extends Bubble{
         }
         return -1;
     }
+
     moveActive(){
-        // if(this.isSnapped() > -1){
-        //     let snappedBubble = passiveBubbles[this.isSnapped()];
 
-            // console.log(passiveBubbles[this.isSnapped()]);
-        // }else{
-            // console.log("notSnapped");
+        for (var i = 0; i < passiveBubbles.length; i++) {
 
-            for (var i = 0; i < passiveBubbles.length; i++) {
+            //deklaration doppelt sich mit isSnapped().
+            let bubblesDist = dist(passiveBubbles[i].posVector.x, passiveBubbles[i].posVector.y, this.posVector.x, this.posVector.y);
 
-                //deklaration doppelt sich mit isSnapped().
-                let bubblesDist = dist(passiveBubbles[i].posVector.x, passiveBubbles[i].posVector.y, this.posVector.x, this.posVector.y);
+            var pull = Matter.Vector.sub(passiveBubbles[i].posVector, this.posVector);
+            // Funktion für Anziehungskraft
+            var pullFactor = map(bubblesDist, 0, this.r*3, 0.05, 0, true);
 
-                var pull = Matter.Vector.sub(passiveBubbles[i].posVector, this.posVector);
-                // Funktion für Anziehungskraft
-                var pullFactor = map(bubblesDist, 0, this.r*3, 0.05, 0, true);
+            pull = Matter.Vector.normalise(pull);
+            pull = Matter.Vector.mult(pull, pullFactor);
 
-                pull = Matter.Vector.normalise(pull);
-                pull = Matter.Vector.mult(pull, pullFactor);
-
-                Body.applyForce(this.body, this.body.position, pull);
-            }
-
-
-        // }
+            Body.applyForce(this.body, this.body.position, pull);
+        }
     }
 }
 
@@ -283,13 +226,11 @@ class PassiveBubble extends Bubble{
         // Body.setMass(this.body, 5);
 
         // Matter.Body.setStatic(this.body, true);
-        // this.vel = createVector();
 
         //Add constraint to its own origin.
         var options = {
             bodyA: this.body,
             pointB: this.origin,
-            // length: this.r*4,
             stiffness: 0.02,
             damping: 0.1
         };
@@ -323,14 +264,16 @@ class PassiveBubble extends Bubble{
 
         Body.applyForce(this.body, this.body.position, attraction);
 
-        // var pull = Matter.Vector.sub(snappedBubble.posVector, this.posVector);
-        // // Funktion für Anziehungskraft
-        // var pullFactor = map(bubblesDist, 0, activeBubble.r*3, 0.04, 0, true);
-        //
-        // pull = Matter.Vector.normalise(pull);
-        // pull = Matter.Vector.mult(pull, pullFactor);
-        //
-        // Body.applyForce(activeBubble.body, activeBubble.body.position, pull);
+        /* Migriert nach ActiveBubble.moveActive()
+            var pull = Matter.Vector.sub(snappedBubble.posVector, this.posVector);
+            // Funktion für Anziehungskraft
+            var pullFactor = map(bubblesDist, 0, activeBubble.r*3, 0.04, 0, true);
+
+            pull = Matter.Vector.normalise(pull);
+            pull = Matter.Vector.mult(pull, pullFactor);
+
+            Body.applyForce(activeBubble.body, activeBubble.body.position, pull);
+        */
 
         // Nur eine Bubble zur zeit wird gesnappt.
         var snappedBubbleId = activeBubble.isSnapped();
@@ -345,13 +288,10 @@ class PassiveBubble extends Bubble{
 
                 Body.applyForce(activeBubble.body, activeBubble.body.position, Matter.Vector.mult(activeBubble.body.force, -1));
             }
-
-
-
         }
 
-
         if(bubblesDist < activeBubble.r*0.8){
+        //Ersetzt durch isSnapped() und if-clause oben.
             // factor = map(bubblesDist, 0, activeBubble.r, 0.05, 0.1, true);
 
             // Body.setPosition(this.body, activeBubble.posVector, false);
