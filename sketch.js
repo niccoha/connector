@@ -154,40 +154,73 @@ function draw() {
     // }
 
 
+
     activeBubble.snapToOrigin();
 
 
     //Set activation state of the passiveBubbles
-    if (activeBubble.originDist > activationThreshold && !active) {
-        active = true;
-    }else if (activeBubble.originDist <= activationThreshold && active) {
-        active = false;
-    }
+    // if (activeBubble.originDist > activationThreshold && !active) {
+    //     active = true;
+    // }else if (activeBubble.originDist <= activationThreshold && active) {
+    //     active = false;
+    // }
 
     for (let i = 0; i < passiveBubbles.length; i++) {
 
-        passiveBubbles[i].move(active);
-        passiveBubbles[i].activate(active);
+        //Set activation state of the passiveBubbles
+        // if (activeBubble.originDist > activationThreshold && !passiveBubbles[i].active) {
+        //     passiveBubbles[i].active = true;
+        // }else if (activeBubble.originDist <= activationThreshold && passiveBubbles[i].active) {
+        //     passiveBubbles[i].active = false;
+        // }
 
+        passiveBubbles[i].move();
+        // passiveBubbles[i].move(active);
+        // passiveBubbles[i].activate(active);
     }
 
+    // var anyActivePb = false;
+    for (var i = 0; i < passiveBubbles.length; i++) {
+        if (passiveBubbles[i].active) {
+            // anyActivePb = true;
+            activeBubble.moveActive(); //Only apply attraction force when active.
+            break;
+        }
+    }
 
+    // activeBubble.moveActive();
 
     //Set layer order according to state.
-    if (active) {
+    for (let i = 0; i < passiveBubbles.length; i++) {
 
-        activeBubble.moveActive(); //Only apply attraction force when active.
-        activeBubble.show();
-        for (let i = 0; i < passiveBubbles.length; i++) {
+        if (!passiveBubbles[i].active) {
             passiveBubbles[i].show();
         }
-    }else if (!active) {
-        for (let i = 0; i < passiveBubbles.length; i++) {
-            passiveBubbles[i].show();
-        }
-
-        activeBubble.show();
     }
+
+    activeBubble.show();
+
+    for (let i = 0; i < passiveBubbles.length; i++) {
+
+        if (passiveBubbles[i].active) {
+            passiveBubbles[i].show();
+        }
+    }
+
+    // if (anyActivePb) {
+    //
+    //     activeBubble.moveActive(); //Only apply attraction force when active.
+    //     activeBubble.show();
+    //     for (let i = 0; i < passiveBubbles.length; i++) {
+    //         passiveBubbles[i].show();
+    //     }
+    // }else if (!active) {
+    //     for (let i = 0; i < passiveBubbles.length; i++) {
+    //         passiveBubbles[i].show();
+    //     }
+    //
+    //     activeBubble.show();
+    // }
 
 
     // frameCounter++;
@@ -468,9 +501,14 @@ class PassiveBubble extends Bubble{
 
     activeBubbleDist;
 
+
+
     constructor(x,y,r,icon){
         super(origin.x,origin.y,r);
         this.icon = icon;
+
+        this.active = false;
+        this.loadingCounter = 0;
 
         Matter.Body.setStatic(this.body, true);
 
@@ -513,31 +551,123 @@ class PassiveBubble extends Bubble{
 
     }
 
-    activate(state){
+    // activate(state){
+    //
+    //     // this.pbConstraintLength = dist(origin.x, origin.y, this.constraintPos.x, this.constraintPos.y);
+    //     // this.originalConstraintLength = this.pbConstraintLength;
+    //     if (state == true) {
+    //
+    //         // Composite.remove(engine.world, this.constraint);
+    //         // var allConstraints = Composite.allConstraints(engine.world);
+    //         // for (var i = 0; i < allConstraints.length; i++) {
+    //         //     if (allConstraints[i].bodyA == this.body){
+    //         //         Composite.remove(engine.world, allConstraints[i]);
+    //         //     }
+    //         // }
+    //         if (this.constraint){
+    //             Composite.remove(engine.world, this.constraint);
+    //         }
+    //
+    //
+    //         // this.body.position = this.targetPos;
+    //         Matter.Body.setStatic(this.body, false);
+    //         // Matter.Body.setPosition(this.body, this.targetPos);
+    //         // Matter.Body.setVelocity(this.body, 0.01);
+    //         // console.log(this.posVector);
+    //         // console.log(this.body.position);
+    //
+    //
+    //         // Add constraint to pb targetPos.
+    //         var options = {
+    //             bodyA: this.body,
+    //             pointB: this.targetPos,
+    //             length: 0,
+    //             stiffness: 0.02,
+    //             damping: 0.1
+    //         };
+    //         this.constraint = Constraint.create(options);
+    //         this.constraintIdActive = this.constraint.id;
+    //
+    //         Composite.add(engine.world, this.constraint);
+    //         // console.log(this.constraint);#
+    //
+    //
+    //         // console.log("activate");
+    //
+    //     }else if (state == false) {
+    //
+    //         // this.posVector = origin;
+    //         // console.log(this.constraint);
+    //         if (this.constraint){
+    //             Composite.remove(engine.world, this.constraint);
+    //         }
+    //
+    //         var options = {
+    //             bodyA: this.body,
+    //             pointB: origin,
+    //             length: 0,
+    //             stiffness: 0.02,
+    //             damping: 0.5
+    //         };
+    //         this.constraint = Constraint.create(options);
+    //
+    //         Composite.add(engine.world, this.constraint);
+    //
+    //         // Matter.Body.setPosition(this.body, origin);
+    //         // Matter.Body.setStatic(this.body, true);
+    //
+    //         // //
+    //         // Composite.remove(engine.world, this.constraint);
+    //         // console.log("deactivate");
+    //     }
+    //     // console.log(Composite.allConstraints(engine.world));
+    //
+    // }
 
-        // this.pbConstraintLength = dist(origin.x, origin.y, this.constraintPos.x, this.constraintPos.y);
-        // this.originalConstraintLength = this.pbConstraintLength;
-        if (state == true) {
+    // nearActive(){
+    //     //Is the center of activeBubble near this passiveBubble?
+    //     // let bubblesDist = dist(activeBubble.posVector.x, activeBubble.posVector.y, this.posVector.x, this.posVector.y);
+    //
+    //
+    //     // if(bubblesDist < activeBubble.r*10){
+    //     if(this.activeBubbleDist < activeBubble.r*10){
+    //         return true;
+    //     }
+    // }
+    // move(active){
+    move(){
 
-            // Composite.remove(engine.world, this.constraint);
-            // var allConstraints = Composite.allConstraints(engine.world);
-            // for (var i = 0; i < allConstraints.length; i++) {
-            //     if (allConstraints[i].bodyA == this.body){
-            //         Composite.remove(engine.world, allConstraints[i]);
-            //     }
-            // }
+        //Calc distance to activeBubble
+        this.activeBubbleDist = dist(activeBubble.posVector.x, activeBubble.posVector.y, this.posVector.x, this.posVector.y);
+
+        //Check for snapping
+        var snappedBubbleId = activeBubble.isSnapped();
+
+        //Set state depending on activeBubbleDist
+        if (activeBubble.originDist > activationThreshold && !this.active) {
+            this.active = true;
+        }
+        else if (activeBubble.originDist <= activationThreshold && this.active) {
+            this.active = false;
+        }
+
+        //Set state depending on snapping
+        if (snappedBubbleId >= 0 && this.body.id != snappedBubbleId) {
+            // console.log("setting active");
+            this.active = false;
+        }else if (snappedBubbleId == -1) {
+            this.loadingCounter = 0;
+        }
+
+        // if (active == true) {
+        if (this.active == true) {
+
+        //+++ Handle pB position through contraint +++
             if (this.constraint){
                 Composite.remove(engine.world, this.constraint);
             }
 
-
-            // this.body.position = this.targetPos;
             Matter.Body.setStatic(this.body, false);
-            // Matter.Body.setPosition(this.body, this.targetPos);
-            // Matter.Body.setVelocity(this.body, 0.01);
-            // console.log(this.posVector);
-            // console.log(this.body.position);
-
 
             // Add constraint to pb targetPos.
             var options = {
@@ -551,15 +681,101 @@ class PassiveBubble extends Bubble{
             this.constraintIdActive = this.constraint.id;
 
             Composite.add(engine.world, this.constraint);
-            // console.log(this.constraint);#
 
 
-            // console.log("activate");
+        //+++ Attraction passiveBubble --> activeBubble +++
+            // Vektor zwischen Bubbles
+            var attraction = Matter.Vector.sub(activeBubble.posVector, this.posVector);
+            // Funktion für Anziehungskraft
+            // var attrFactor = map(this.activeBubbleDist, activeBubble.r*1, activeBubble.r*4, 0.08, 0, true);
+            var attrFactor = map(this.activeBubbleDist, activeBubble.r*1, activeBubble.r*5, 0.4, 0, true);
 
-        }else if (state == false) {
+            // Attraction umrechnen und anwenden.
+            // console.log(bubblesDist, factor);
+            attraction = Matter.Vector.normalise(attraction);
+            attraction = Matter.Vector.mult(attraction, attrFactor);
 
-            // this.posVector = origin;
-            // console.log(this.constraint);
+            Body.applyForce(this.body, this.body.position, attraction);
+
+        //+++ Snapping +++
+            //Nur eine Bubble zur zeit wird gesnappt.
+            // var snappedBubbleId = activeBubble.isSnapped();
+            // var snappedBubble;
+
+
+            if (snappedBubbleId >= 0) {
+
+                if (this.body.id == snappedBubbleId) {
+
+                    //Snap passiveBubble to activeBubble and counter both bubble's forces.
+                    // Body.setPosition(this.body, activeBubble.posVector, false);
+                    // Body.setPosition(activeBubble.body, this.body.position, false);
+                    Body.setPosition(activeBubble.body, this.body.position, false);
+
+                    Body.applyForce(activeBubble.body, activeBubble.body.position, Matter.Vector.mult(activeBubble.body.force, -1));
+
+
+                    // var r = map(activeBubble.originDist, activationThreshold, 150, 0,  1.5, true);
+                    // stroke(184, 90, 98, 100);
+
+                    // for (var i = 0; i < 100; i++) {
+                    //
+                    //
+                    //     let j = map(i, 0, 100, 0.78, 1.5, true)
+                    //
+                    //     console.log(i, j);
+                    //
+                    //
+                    // }
+
+                        // console.log(this.loadingCounter);
+                        let counterMax = 155;
+                        let loadingMax = 140;
+                        let delay = 25;
+                        let counterMin = 25;
+                        if (this.loadingCounter < counterMax && this.loadingCounter > delay) {
+
+                            let j = map(this.loadingCounter, delay, loadingMax, 0, TWO_PI, true);
+
+                            stroke(210, 100, 62, 100);
+                            // stroke(0, 100, 62, 100);
+                            // stroke(100, 100);
+                            let weight = 6;
+                            // let offset = -12;
+                            let offset = map(this.loadingCounter, loadingMax, counterMax, 0, -weight-12, true);
+                            // console.log(offset);
+
+                            strokeWeight(weight);
+                            arc(this.posVector.x, this.posVector.y, this.r*2 + weight + offset, this.r*2 + weight + offset, 0, j);
+                            stroke(0,0);
+                        }else if (this.loadingCounter == counterMax) {
+                            // snappedBubbleId = -1;
+                            // this.active = false;
+                            Body.setPosition(activeBubble.body, origin, false);
+                        }
+
+                        if (this.loadingCounter < counterMax) {
+                            this.loadingCounter++;
+                        }
+                        // else{
+                        //     this.loadingCounter = 99;
+                        //
+                        // }
+
+
+                }
+                // else{
+                //     this.active = false;
+                // }
+
+                Body.applyForce(this.body, this.body.position, Matter.Vector.mult(this.body.force, -1));
+
+            }
+
+        }else if (this.active == false) {
+        // }else if (active == false) {
+
+            //+++ Handle pB position through contraint +++
             if (this.constraint){
                 Composite.remove(engine.world, this.constraint);
             }
@@ -569,71 +785,14 @@ class PassiveBubble extends Bubble{
                 pointB: origin,
                 length: 0,
                 stiffness: 0.02,
-                damping: 0.5
+                damping: 0.3
             };
             this.constraint = Constraint.create(options);
 
             Composite.add(engine.world, this.constraint);
 
-            // Matter.Body.setPosition(this.body, origin);
-            // Matter.Body.setStatic(this.body, true);
-
-            // //
-            // Composite.remove(engine.world, this.constraint);
-            // console.log("deactivate");
         }
-        // console.log(Composite.allConstraints(engine.world));
 
-    }
-
-    // nearActive(){
-    //     //Is the center of activeBubble near this passiveBubble?
-    //     // let bubblesDist = dist(activeBubble.posVector.x, activeBubble.posVector.y, this.posVector.x, this.posVector.y);
-    //
-    //
-    //     // if(bubblesDist < activeBubble.r*10){
-    //     if(this.activeBubbleDist < activeBubble.r*10){
-    //         return true;
-    //     }
-    // }
-    move(state){
-        this.activeBubbleDist = dist(activeBubble.posVector.x, activeBubble.posVector.y, this.posVector.x, this.posVector.y);
-        // let activeBubbleDist = dist(activeBubble.posVector.x, activeBubble.posVector.y, this.posVector.x, this.posVector.y);
-
-    // Attraction passiveBubble --> activeBubble
-        // Vektor zwischen Bubbles
-        var attraction = Matter.Vector.sub(activeBubble.posVector, this.posVector);
-        // Funktion für Anziehungskraft
-        // var attrFactor = map(this.activeBubbleDist, activeBubble.r*1, activeBubble.r*4, 0.08, 0, true);
-        var attrFactor = map(this.activeBubbleDist, activeBubble.r*1, activeBubble.r*5, 0.4, 0, true);
-
-        // Attraction umrechnen und anwenden.
-        // console.log(bubblesDist, factor);
-        attraction = Matter.Vector.normalise(attraction);
-        attraction = Matter.Vector.mult(attraction, attrFactor);
-
-        Body.applyForce(this.body, this.body.position, attraction);
-
-
-        // Nur eine Bubble zur zeit wird gesnappt.
-        var snappedBubbleId = activeBubble.isSnapped();
-        // var snappedBubble;
-
-        if (snappedBubbleId >= 0) {
-
-            if (this.body.id == snappedBubbleId) {
-
-                //Snap passiveBubble to activeBubble and counter both bubble's forces.
-                // Body.setPosition(this.body, activeBubble.posVector, false);
-                Body.setPosition(activeBubble.body, this.body.position, false);
-
-                Body.applyForce(activeBubble.body, activeBubble.body.position, Matter.Vector.mult(activeBubble.body.force, -1));
-
-            }
-
-            Body.applyForce(this.body, this.body.position, Matter.Vector.mult(this.body.force, -1));
-
-        }
     }
 
     showOrigin(){
