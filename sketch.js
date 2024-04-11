@@ -1,28 +1,6 @@
 
 // browser-sync start --server -f -w
 
-/* TODO:
-
-    Kollisionen von passiveBubbles untereinander aktivieren.
-
-    Anziehungskräfte (map functions) non-linear aufbauen?
-        (Wirken forces bereits non-linear?)
-        -- https://p5js.org/examples/math-linear-interpolation.html
-        -- https://p5js.org/examples/math-sine.html
-
-    Andere Form für Icons?
-        paper.js svgs? -- https://www.youtube.com/watch?v=2JKEkcjF1aA
-        https://p5js.org/examples/simulate-soft-body.html
-        https://p5js.org/examples/motion-morph.html
-        https://www.gorillasun.de/blog/working-with-svgs-in-p5js/
-
-    Morph/merge effekt zeichnen?
-        http://paperjs.org/examples/meta-balls/
-
-    Bubble snapping von PassiveBubble class zu ActiveBubble verschieben.
-
-
-*/
 
 // p5.disableFriendlyErrors = true; // Improves performance?
 
@@ -50,9 +28,20 @@ var frameCounter = 0;
 var fps;
 
 function preload(){
-    originalAppImg = loadImage("img/app-icon-blau.png");
-    bgImg = loadImage('img/bg-mitX-s.jpg');
-    bgOverlay = loadImage('img/bg-overlayed-s.jpg');
+    bgImg = loadImage('img/bg-light-s.jpg');
+    bgOverlay = loadImage('img/bg-dark-s.jpg');
+
+    // originalAppImg = loadImage("img/app-icon-blau.png");
+    // originalIconActive = loadImage('img/icons/icon-active-rect.png');
+    originalIconActive = loadImage('img/icons/icon-active-rect.png');
+
+    iconPhone12 = loadImage('img/icons/icon-phone-12.png');
+    iconCloudNi = loadImage('img/icons/icon-cloud-ni.png');
+    iconLaptop = loadImage('img/icons/icon-laptop.png');
+    iconMac = loadImage('img/icons/icon-mac.png');
+    iconPrinterHp = loadImage('img/icons/icon-printer-hp.png');
+    iconTvUni = loadImage('img/icons/icon-tv-uni.png');
+
 }
 
 function setup() {
@@ -103,18 +92,16 @@ function setup() {
     // Setup passive (device) bubbles
 
     pbData = [
-        {x:118, y:730, icon: icon=loadImage('img/mac-icon.png')},
-        {x:430, y:810, icon: icon=loadImage('img/mac-icon.png')},
-        {x:660, y:1020, icon: icon=loadImage('img/mac-icon.png')},
-        {x:810, y:1290, icon: icon=loadImage('img/mac-icon.png')},
-        {x:865, y:1634, icon: icon=loadImage('img/mac-icon.png')},
-        // {x:118, y:730, icon: icon=loadImage('img/blank-icon.png')},
-        // {x:430, y:810, icon: icon=loadImage('img/blank-icon.png')},
-        // {x:660, y:1020, icon: icon=loadImage('img/blank-icon.png')},
-        // {x:810, y:1290, icon: icon=loadImage('img/blank-icon.png')},
-        // {x:865, y:1634, icon: icon=loadImage('img/blank-icon.png')},
+        {x:118, y:730, icon: icon=iconPhone12},
+        {x:430, y:810, icon: icon=iconLaptop},
+        {x:660, y:1020, icon: icon=iconMac},
+        {x:810, y:1290, icon: icon=iconCloudNi},
+        // {x:865, y:1634, icon: icon=iconPrinterHp},
+        {x:865, y:1634, icon: icon=iconTvUni},
+
     ]
-    var pbRadius = 84;
+    // var pbRadius = 84;
+    var pbRadius = 94;
 
     passiveBubbles = [];
     for (let i = 0; i < pbData.length; i++) {
@@ -122,6 +109,7 @@ function setup() {
         passiveBubbles.push(pb);
     }
 
+    // activeBubble = new ActiveBubble(origin.x, origin.y, 84);
     activeBubble = new ActiveBubble(origin.x, origin.y, 79);
 
 
@@ -145,15 +133,6 @@ function draw() {
     // helper shapes
     // fill(10, 100, 50, 0.4);
     // ellipse(118, 1634, 1500, 1800);
-    // rect(0, 1634 - 79 -7, 118 + 79+7, canvasHeight - 1634 + 79+7);
-
-
-    // //Show walls
-    // for (var i = 0; i < walls.length; i++) {
-    //   walls[i].show();
-    // }
-
-
 
     activeBubble.snapToOrigin();
 
@@ -165,30 +144,19 @@ function draw() {
     //     active = false;
     // }
 
+    //Initialize passiveBubble functions
     for (let i = 0; i < passiveBubbles.length; i++) {
 
-        //Set activation state of the passiveBubbles
-        // if (activeBubble.originDist > activationThreshold && !passiveBubbles[i].active) {
-        //     passiveBubbles[i].active = true;
-        // }else if (activeBubble.originDist <= activationThreshold && passiveBubbles[i].active) {
-        //     passiveBubbles[i].active = false;
-        // }
-
         passiveBubbles[i].move();
-        // passiveBubbles[i].move(active);
-        // passiveBubbles[i].activate(active);
+
     }
 
-    // var anyActivePb = false;
     for (var i = 0; i < passiveBubbles.length; i++) {
         if (passiveBubbles[i].active) {
-            // anyActivePb = true;
             activeBubble.moveActive(); //Only apply attraction force when active.
             break;
         }
     }
-
-    // activeBubble.moveActive();
 
     //Set layer order according to state.
     for (let i = 0; i < passiveBubbles.length; i++) {
@@ -207,20 +175,6 @@ function draw() {
         }
     }
 
-    // if (anyActivePb) {
-    //
-    //     activeBubble.moveActive(); //Only apply attraction force when active.
-    //     activeBubble.show();
-    //     for (let i = 0; i < passiveBubbles.length; i++) {
-    //         passiveBubbles[i].show();
-    //     }
-    // }else if (!active) {
-    //     for (let i = 0; i < passiveBubbles.length; i++) {
-    //         passiveBubbles[i].show();
-    //     }
-    //
-    //     activeBubble.show();
-    // }
 
 
     // frameCounter++;
@@ -296,21 +250,6 @@ class Bubble{
         }
     }
 
-    // linearGradient(sX, sY, eX, eY, colorS, colorE){
-    //
-    //     let gradient = drawingContext.createLinearGradient(sX, sY, eX, eY);
-    //     gradient.addColorStop(0, colorS);
-    //     gradient.addColorStop(1, colorE);
-    //
-    //     // if (mode==fill) {
-    //     //     drawingContext.fillStyle = gradient;
-    //     // }
-    //     // else if (mode==stroke) {
-    //     //     drawingContext.strokeStyle = gradient;
-    //     // }
-    //
-    //     drawingContext.strokeStyle = gradient;
-    // }
 
 
     show(){
@@ -322,13 +261,11 @@ class Bubble{
 
 
         ellipse(this.posVector.x, this.posVector.y, this.r*2);
-        // drawingContext.fillStyle = false;
     }
 }
 
 class ActiveBubble extends Bubble{
 
-    // cornerRadius = 34;
     cornerRadius;
 
     constructor(x,y,r){
@@ -355,42 +292,6 @@ class ActiveBubble extends Bubble{
         mouseConstraint = MouseConstraint.create(engine, options);
         Composite.add(engine.world, mouseConstraint);
 
-
-
-        // Create icon gradient img.
-        // Create a p5.Image object.
-        // this.gradientImg = createImage(this.r*2, this.r*2);
-        // let c1 = color(220,100,50);
-        // let c2 = color(190,100,50);
-        //
-        // // Load the image's pixels into memory.
-        // this.gradientImg.loadPixels();
-        //
-        // // Create a color gradient.
-        // for (let y = 0; y < this.gradientImg.height; y += 1) {
-        //     for (let x = 0; x < this.gradientImg.width; x += 1) {
-        //
-        //         let inter = map(x, y, y + this.gradientImg.height, 0.2, 1);
-        //         let c = lerpColor(c1, c2, inter);
-        //
-        //         // Set the pixel's color.
-        //         this.gradientImg.set(x, y, c);
-        //     }
-        // }
-        // // Update the image's pixels.
-        // this.gradientImg.updatePixels();
-
-
-        // this.originalAppImg = loadImage("img/app-icon-blau.png");
-
-
-
-
-
-
-        // console.log(this.circleMask);
-
-        // this.gradientImg.mask(this.circleMask);
     }
 
 
@@ -401,10 +302,16 @@ class ActiveBubble extends Bubble{
 
             let bubblesDist = dist(passiveBubbles[i].posVector.x, passiveBubbles[i].posVector.y, this.posVector.x, this.posVector.y);
 
-            if (bubblesDist < this.r*0.2) {
+            if (bubblesDist < this.r*0.2 && !mouseIsPressed) {
+            // if (bubblesDist <= 2) {
                 // console.log(passiveBubbles[i].body.id);
                 return passiveBubbles[i].body.id;
 
+            }else if (bubblesDist < this.r*0.2) {
+                //Reduziert "zappeln" wenn activeBubble nahe an pB gehalten wird.
+                Body.applyForce(activeBubble.body, activeBubble.body.position, Matter.Vector.mult(activeBubble.body.force, -1));
+
+                Body.applyForce(passiveBubbles[i].body, passiveBubbles[i].body.position, Matter.Vector.mult(passiveBubbles[i].body.force, -1));
             }
         }
         return -1;
@@ -475,7 +382,8 @@ class ActiveBubble extends Bubble{
         // console.log(this.originalAppImg);
         // console.log(this.appImg);
 
-        this.appImg = originalAppImg.get();
+        // this.appImg = originalAppImg.get();
+        this.appImg = originalIconActive.get();
         this.appImg.mask(this.appIconMask);
         this.appIconMask.remove();
 
@@ -483,14 +391,6 @@ class ActiveBubble extends Bubble{
 
         imageMode(CENTER);
         image(this.appImg, this.posVector.x, this.posVector.y);
-        // image(originalAppImg, this.posVector.x, this.posVector.y);
-
-
-
-
-        // console.log(this.posVector);
-        //Calc pbConstraintLength
-
 
 
     }
@@ -524,30 +424,6 @@ class PassiveBubble extends Bubble{
         // Body.setMass(this.body, 5);
 
         // Matter.Body.setStatic(this.body, true);
-
-        // var options = {
-        //     bodyA: this.body,
-        //     pointB: this.targetPos,
-        //     length: undefined,
-        //     stiffness: 0.02,
-        //     damping: 0.1
-        // };
-        // this.constraint = Constraint.create(options);
-        // Composite.add(engine.world, this.constraint);
-        // console.log(this.constraint);
-
-        // rect(0, 1634 - 79 -7, 118 + 79+7, canvasHeight - 1634 + 79+7);
-
-
-        // this.originMask = createGraphics(118 + 79 + 7, canvasHeight - 1634 + 79+7);
-        // this.originMask.stroke(0,0);
-        // this.originMask.fill(255, 255);
-        // this.originMask.rectMode(CORNER);
-        // this.originMask.rect(0, 1634 - 79 -7, 118 + 79+7, canvasHeight - 1634 + 79+7);
-        //
-        // this.icon.mask(this.originMask);
-        // console.log(this.originMask);
-
 
     }
 
@@ -624,17 +500,6 @@ class PassiveBubble extends Bubble{
     //
     // }
 
-    // nearActive(){
-    //     //Is the center of activeBubble near this passiveBubble?
-    //     // let bubblesDist = dist(activeBubble.posVector.x, activeBubble.posVector.y, this.posVector.x, this.posVector.y);
-    //
-    //
-    //     // if(bubblesDist < activeBubble.r*10){
-    //     if(this.activeBubbleDist < activeBubble.r*10){
-    //         return true;
-    //     }
-    // }
-    // move(active){
     move(){
 
         //Calc distance to activeBubble
@@ -653,7 +518,6 @@ class PassiveBubble extends Bubble{
 
         //Set state depending on snapping
         if (snappedBubbleId >= 0 && this.body.id != snappedBubbleId) {
-            // console.log("setting active");
             this.active = false;
         }else if (snappedBubbleId == -1) {
             this.loadingCounter = 0;
@@ -699,10 +563,6 @@ class PassiveBubble extends Bubble{
 
         //+++ Snapping +++
             //Nur eine Bubble zur zeit wird gesnappt.
-            // var snappedBubbleId = activeBubble.isSnapped();
-            // var snappedBubble;
-
-
             if (snappedBubbleId >= 0) {
 
                 if (this.body.id == snappedBubbleId) {
@@ -715,38 +575,26 @@ class PassiveBubble extends Bubble{
                     Body.applyForce(activeBubble.body, activeBubble.body.position, Matter.Vector.mult(activeBubble.body.force, -1));
 
 
-                    // var r = map(activeBubble.originDist, activationThreshold, 150, 0,  1.5, true);
-                    // stroke(184, 90, 98, 100);
-
-                    // for (var i = 0; i < 100; i++) {
-                    //
-                    //
-                    //     let j = map(i, 0, 100, 0.78, 1.5, true)
-                    //
-                    //     console.log(i, j);
-                    //
-                    //
-                    // }
-
-                        // console.log(this.loadingCounter);
-                        let counterMax = 155;
-                        let loadingMax = 140;
-                        let delay = 25;
+                    //+++ Loading animation +++
                         let counterMin = 25;
+                        let delay = 25;
+                        let loadingMax = 80;
+                        let counterMax = loadingMax + 15;
                         if (this.loadingCounter < counterMax && this.loadingCounter > delay) {
 
-                            let j = map(this.loadingCounter, delay, loadingMax, 0, TWO_PI, true);
+                            let j = map(this.loadingCounter, delay, loadingMax, -HALF_PI, TWO_PI-HALF_PI, true);
 
+                            // stroke(210, 98, 65, 100);
                             stroke(210, 100, 62, 100);
                             // stroke(0, 100, 62, 100);
                             // stroke(100, 100);
                             let weight = 6;
-                            // let offset = -12;
+
                             let offset = map(this.loadingCounter, loadingMax, counterMax, 0, -weight-12, true);
-                            // console.log(offset);
+
 
                             strokeWeight(weight);
-                            arc(this.posVector.x, this.posVector.y, this.r*2 + weight + offset, this.r*2 + weight + offset, 0, j);
+                            arc(this.posVector.x, this.posVector.y, this.r*2 + weight + offset, this.r*2 + weight + offset, -HALF_PI, j);
                             stroke(0,0);
                         }else if (this.loadingCounter == counterMax) {
                             // snappedBubbleId = -1;
@@ -805,33 +653,6 @@ class PassiveBubble extends Bubble{
 
 
 
-
-        // if (activeBubble.originDist > 50 && !active) {
-        //     this.activate(true);
-        //     active = true;
-        // }else if (activeBubble.originDist <= 50 && active) {
-        //     this.activate(false);
-        //     active = false;
-        // }
-        //     this.pbConstraintLength = 100;
-        //
-        //     var options = {
-        //         bodyA: this.body,
-        //         pointB: this.constraintPos,
-        //         length: this.pbConstraintLength,
-        //         stiffness: 0.02,
-        //         damping: 0.1
-        //     };
-        //     this.constraint = Constraint.create(options);
-        //     Composite.add(engine.world, this.constraint);
-        // }
-        // // lerp(activeBubble.originDist)
-        // // map(this.pbConstraintLength, activeBubble.originDist, 0, this.originalConstraintLength, 0);
-        // //
-        // console.log(this.originalConstraintLength, this.pbConstraintLength);
-        // }
-        // tint(70, 100);
-
         this.originDist = dist(this.posVector.x, this.posVector.y, origin.x, origin.y);
         // console.log(this.originDist);
 
@@ -845,7 +666,5 @@ class PassiveBubble extends Bubble{
         image(this.icon, this.posVector.x, this.posVector.y,  this.r*2, this.r*2);
         noTint();
 
-
-        // strokeWeight(20);
     }
 }
